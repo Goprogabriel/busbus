@@ -26,85 +26,186 @@
                     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
                     <div class="progress-text">
                         <span data-i18n="form.step">Step</span>
-                        <span id="current-step">1</span> / <span id="total-steps">4</span>
+                        <span id="current-step">1</span> / <span id="total-steps">6</span>
                         <span class="progress-percent" id="progress-percent">0%</span>
                     </div>
                 </div>
 
                 <form id="wizard-form" novalidate>
-                    <!-- Step 1 -->
-                    <div class="form-step" data-step="1">
-                        <h2 data-i18n="form.step1.title">Personal Information</h2>
-                        <p class="step-description" data-i18n="form.step1.description">Let's start with the basics.</p>
+                    <!-- Step 1: Basic Info -->
+                    <div class="form-step active" data-step="1">
+                        <h2 data-i18n="form.step1.title">Personlige Oplysninger</h2>
+                        <p class="step-description">Grundlæggende information</p>
                         <div class="form-group">
-                            <label for="name" data-i18n="form.step1.name">Name <span class="required">*</span></label>
-                            <input type="text" id="name" name="name" required aria-required="true" data-i18n-placeholder="form.step1.namePlaceholder">
-                            <span class="error-message" data-i18n="form.errors.required"></span>
+                            <label for="volNo" data-i18n="fields.volNo">People-VOL-nr.</label>
+                            <input type="number" id="volNo" name="volNo" inputmode="numeric" placeholder="123456">
                         </div>
                         <div class="form-group">
-                            <label for="email" data-i18n="form.step1.email">Email <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required aria-required="true" data-i18n-placeholder="form.step1.emailPlaceholder">
-                            <span class="error-message" data-i18n="form.errors.email"></span>
+                            <label for="firstNames" data-i18n="fields.firstNames">Fornavn og mellemnavn <span class="required">*</span></label>
+                            <input type="text" id="firstNames" name="firstNames" required placeholder="f.eks. Anna Marie">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" data-i18n="fields.lastName">Efternavn <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="f.eks. Jensen">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate" data-i18n="fields.birthdate">Fødselsdag <span class="required">*</span></label>
+                            <input type="date" id="birthdate" name="birthdate" required>
+                            <small class="field-hint">Vi tjekker om du er under 18 d. 27. juni 2026</small>
                         </div>
                     </div>
 
-                    <!-- Step 2 -->
+                    <!-- Step 2: Address -->
                     <div class="form-step" data-step="2">
-                        <h2 data-i18n="form.step2.title">Professional Details</h2>
-                        <p class="step-description" data-i18n="form.step2.description">Tell us about your work (optional).</p>
+                        <h2 data-i18n="form.step2.title">Adresse</h2>
+                        <p class="step-description">Hvor bor du?</p>
                         <div class="form-group">
-                            <label for="company" data-i18n="form.step2.company">Company</label>
-                            <input type="text" id="company" name="company" data-i18n-placeholder="form.step2.companyPlaceholder">
+                            <label for="address" data-i18n="fields.address">Adresse <span class="required">*</span></label>
+                            <input type="text" id="address" name="address" required placeholder="f.eks. Hovedgaden 12">
                         </div>
                         <div class="form-group">
-                            <label for="role" data-i18n="form.step2.role">Role</label>
-                            <input type="text" id="role" name="role" data-i18n-placeholder="form.step2.rolePlaceholder">
+                            <label for="postcode" data-i18n="fields.postcode">Postnummer <span class="required">*</span></label>
+                            <input type="number" id="postcode" name="postcode" required inputmode="numeric" placeholder="2100">
+                        </div>
+                        <div class="form-group">
+                            <label for="city" data-i18n="fields.city">By <span class="required">*</span></label>
+                            <input type="text" id="city" name="city" required placeholder="f.eks. København">
+                        </div>
+                        <div class="form-group">
+                            <label for="country" data-i18n="fields.country">Land <span class="required">*</span></label>
+                            <select id="country" name="country" required>
+                                <option value="">Vælg land</option>
+                                <option value="dk">Denmark (DK)</option>
+                                <option value="no">Norway (NO)</option>
+                                <option value="se">Sweden (SE)</option>
+                                <option value="de">Germany (DE)</option>
+                                <option value="en">United Kingdom (EN)</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
+                    <!-- Step 3: Contact -->
                     <div class="form-step" data-step="3">
-                        <h2 data-i18n="form.step3.title">Your Preferences</h2>
-                        <p class="step-description" data-i18n="form.step3.description">Help us understand your needs better.</p>
+                        <h2 data-i18n="form.step3.title">Kontaktoplysninger</h2>
+                        <p class="step-description">Hvordan kan vi nå dig?</p>
                         <div class="form-group">
-                            <label data-i18n="form.step3.interest">What are you most interested in? <span class="required">*</span></label>
-                            <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="interest" value="product" required aria-required="true"><span data-i18n="form.step3.option1">Product Updates</span></label>
-                                <label class="radio-label"><input type="radio" name="interest" value="events"><span data-i18n="form.step3.option2">Events & Workshops</span></label>
-                                <label class="radio-label"><input type="radio" name="interest" value="newsletter"><span data-i18n="form.step3.option3">Newsletter</span></label>
-                                <label class="radio-label"><input type="radio" name="interest" value="other"><span data-i18n="form.step3.option4">Other</span></label>
+                            <label for="phone" data-i18n="fields.phone">Tlf. nr. <span class="required">*</span></label>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                <select id="phoneCountry" name="phoneCountry" style="width:140px;" required>
+                                    <option value="+45">DK +45</option>
+                                    <option value="+47">NO +47</option>
+                                    <option value="+46">SE +46</option>
+                                    <option value="+49">DE +49</option>
+                                    <option value="+44">UK +44</option>
+                                    <option value="">Other</option>
+                                </select>
+                                <input type="tel" id="phone" name="phone" required placeholder="12345678" style="flex:1;">
                             </div>
-                            <span class="error-message" data-i18n="form.errors.required"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="notes" data-i18n="form.step3.notes">Additional Notes</label>
-                            <textarea id="notes" name="notes" rows="4" data-i18n-placeholder="form.step3.notesPlaceholder"></textarea>
                         </div>
                     </div>
 
-                    <!-- Step 4: Review -->
+                    <!-- Step 4: Volunteer Experience -->
                     <div class="form-step" data-step="4">
-                        <h2 data-i18n="form.step4.title">Review & Submit</h2>
-                        <p class="step-description" data-i18n="form.step4.description">Please review your information before submitting.</p>
+                        <h2>Frivillig Erfaring</h2>
+                        <p class="step-description">Fortæl os om din baggrund</p>
+                        <div class="form-group">
+                            <label data-i18n="fields.previousVolunteerQuestion">Tidligere frivillig hos BUSBUS?</label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="previousVolunteer" value="yes" required> <span data-i18n="form.yes">Ja</span></label>
+                                <label class="radio-label"><input type="radio" name="previousVolunteer" value="no"> <span data-i18n="form.no">Nej</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience" data-i18n="fields.experienceLabel">Har du relevant erhvervserfaring? Skriv her (valgfrit)</label>
+                            <textarea id="experience" name="experience" rows="4" placeholder="Beskriv din erfaring..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Group & Remarks -->
+                    <div class="form-step" data-step="5">
+                        <h2>Gruppe & Bemærkninger</h2>
+                        <p class="step-description">Yderligere information</p>
+                        <div class="form-group">
+                            <label data-i18n="fields.inGroupQuestion">Er du i gruppe med andre?</label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="inGroup" value="yes" required> <span data-i18n="form.yes">Ja</span></label>
+                                <label class="radio-label"><input type="radio" name="inGroup" value="no"> <span data-i18n="form.no">Nej</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="groupNameWrap" style="display:none;">
+                            <label for="groupName" data-i18n="fields.groupName">Gruppenavn</label>
+                            <input type="text" id="groupName" name="groupName" placeholder="f.eks. Team København">
+                        </div>
+                        <div class="form-group">
+                            <label for="remarks" data-i18n="fields.remarks">Evt. bemærkninger</label>
+                            <textarea id="remarks" name="remarks" rows="4" placeholder="Eventuelle kommentarer..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Review & Submit (+ Parent Contact if under 18) -->
+                    <div class="form-step" data-step="6">
+                        <h2 data-i18n="form.step4.title">Gennemse & Indsend</h2>
+                        <p class="step-description">Tjek dine oplysninger før du sender</p>
+
+                        <!-- Parent contact section (shown only if under 18 on June 27, 2026) -->
+                        <div id="parentContact" style="display:none;background:var(--color-bg);padding:var(--spacing-lg);border-radius:var(--radius-md);margin-bottom:var(--spacing-lg);border:2px solid var(--color-accent);">
+                            <h3 data-i18n="fields.under18Notice" style="margin-bottom:var(--spacing-md);color:var(--color-accent);">Kontaktoplysninger på forælder eller værge</h3>
+                            <p style="font-size:var(--font-size-sm);color:var(--color-text-light);margin-bottom:var(--spacing-md);">Du er under 18 år d. 27. juni 2026, så vi har brug for kontaktoplysninger på din forælder/værge.</p>
+                            <div class="form-group">
+                                <label for="parentName" data-i18n="fields.parentName">Navn på forælder/værge <span class="required">*</span></label>
+                                <input type="text" id="parentName" name="parentName" placeholder="Forældres fulde navn">
+                            </div>
+                            <div class="form-group">
+                                <label for="parentPhone" data-i18n="fields.parentPhone">Telefonnummer på forælder/værge <span class="required">*</span></label>
+                                <input type="tel" id="parentPhone" name="parentPhone" placeholder="12345678">
+                            </div>
+                        </div>
+
                         <div class="review-section">
-                            <h3 data-i18n="form.step1.title">Personal Information</h3>
+                            <h3>Personlige Oplysninger</h3>
                             <dl class="review-list">
-                                <dt data-i18n="form.step1.name">Name</dt><dd id="review-name">-</dd>
-                                <dt data-i18n="form.step1.email">Email</dt><dd id="review-email">-</dd>
+                                <dt>People-VOL-nr.</dt><dd id="review-volNo">-</dd>
+                                <dt>Fornavn</dt><dd id="review-firstNames">-</dd>
+                                <dt>Efternavn</dt><dd id="review-lastName">-</dd>
+                                <dt>Fødselsdag</dt><dd id="review-birthdate">-</dd>
                             </dl>
                         </div>
                         <div class="review-section">
-                            <h3 data-i18n="form.step2.title">Professional Details</h3>
+                            <h3>Adresse</h3>
                             <dl class="review-list">
-                                <dt data-i18n="form.step2.company">Company</dt><dd id="review-company">-</dd>
-                                <dt data-i18n="form.step2.role">Role</dt><dd id="review-role">-</dd>
+                                <dt>Adresse</dt><dd id="review-address">-</dd>
+                                <dt>Postnummer</dt><dd id="review-postcode">-</dd>
+                                <dt>By</dt><dd id="review-city">-</dd>
+                                <dt>Land</dt><dd id="review-country">-</dd>
                             </dl>
                         </div>
                         <div class="review-section">
-                            <h3 data-i18n="form.step3.title">Your Preferences</h3>
+                            <h3>Kontakt</h3>
                             <dl class="review-list">
-                                <dt data-i18n="form.step3.interest">Interest</dt><dd id="review-interest">-</dd>
-                                <dt data-i18n="form.step3.notes">Notes</dt><dd id="review-notes">-</dd>
+                                <dt>Telefon</dt><dd id="review-phone">-</dd>
+                            </dl>
+                        </div>
+                        <div class="review-section">
+                            <h3>Erfaring</h3>
+                            <dl class="review-list">
+                                <dt>Tidligere frivillig</dt><dd id="review-previousVolunteer">-</dd>
+                                <dt>Erhvervserfaring</dt><dd id="review-experience">-</dd>
+                            </dl>
+                        </div>
+                        <div class="review-section">
+                            <h3>Gruppe & Bemærkninger</h3>
+                            <dl class="review-list">
+                                <dt>I gruppe?</dt><dd id="review-inGroup">-</dd>
+                                <dt>Gruppenavn</dt><dd id="review-groupName">-</dd>
+                                <dt>Bemærkninger</dt><dd id="review-remarks">-</dd>
+                            </dl>
+                        </div>
+                        <div class="review-section" id="review-parent" style="display:none;">
+                            <h3>Forældre / Værge</h3>
+                            <dl class="review-list">
+                                <dt>Navn</dt><dd id="review-parentName">-</dd>
+                                <dt>Telefon</dt><dd id="review-parentPhone">-</dd>
                             </dl>
                         </div>
                     </div>

@@ -43,6 +43,8 @@ const i18n = {
             back: "Tilbage",
             next: "Næste",
             submit: "Indsend",
+            yes: "Ja",
+            no: "Nej",
             step1: {
                 title: "Personlige Oplysninger",
                 description: "Lad os starte med det grundlæggende.",
@@ -87,6 +89,26 @@ const i18n = {
         toast: {
             success: "Indsendelse gennemført!",
             error: "Der opstod en fejl. Prøv venligst igen."
+        },
+        fields: {
+            volNo: "People-VOL-nr.",
+            firstNames: "Fornavn og mellemnavn",
+            lastName: "Efternavn",
+            birthdate: "Fødselsdag",
+            address: "Adresse",
+            postcode: "Postnummer",
+            city: "By",
+            country: "Land",
+            phone: "Tlf. nr.",
+            phoneCountry: "Landekode",
+            previousVolunteerQuestion: "Tidligere frivillig hos BUSBUS?",
+            experienceLabel: "Har du relevant erhvervserfaring, kan du evt. skrive det her.",
+            inGroupQuestion: "Er du i gruppe med andre?",
+            groupName: "Gruppenavn",
+            remarks: "Evt. bemærkninger",
+            parentName: "Navn på forælder/værge",
+            parentPhone: "Telefonnummer på forælder/værge",
+            under18Notice: "Hvis under 18 år, angiv forælder eller værge"
         }
     },
     en: {
@@ -100,6 +122,8 @@ const i18n = {
             back: "Back",
             next: "Next",
             submit: "Submit",
+            yes: "Yes",
+            no: "No",
             step1: {
                 title: "Personal Information",
                 description: "Let's start with the basics.",
@@ -144,6 +168,26 @@ const i18n = {
         toast: {
             success: "Submission successful!",
             error: "An error occurred. Please try again."
+        },
+        fields: {
+            volNo: "People-VOL-no.",
+            firstNames: "First and middle name",
+            lastName: "Last name",
+            birthdate: "Birthdate",
+            address: "Address",
+            postcode: "Postal code",
+            city: "City",
+            country: "Country",
+            phone: "Phone",
+            phoneCountry: "Country code",
+            previousVolunteerQuestion: "Previously volunteered at BUSBUS?",
+            experienceLabel: "Do you have relevant work experience? You can write it here.",
+            inGroupQuestion: "Are you in a group with others?",
+            groupName: "Group name",
+            remarks: "Any comments",
+            parentName: "Parent/guardian name",
+            parentPhone: "Parent/guardian phone",
+            under18Notice: "If under 18, provide parent or guardian contact"
         }
     }
 };
@@ -155,7 +199,7 @@ const i18n = {
 const state = {
     // For multi-page setup we still track step and language
     currentStep: 1,
-    totalSteps: 4,
+    totalSteps: 6,
     currentLanguage: localStorage.getItem('language') || 'en',
     formData: {}
 };
@@ -188,10 +232,13 @@ function t(keyPath) {
  * Update all translatable elements in the DOM
  */
 function updateTranslations() {
-    // Update text content
+    // Update text content (preserve inner required markers when present)
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        element.textContent = t(key);
+        const requiredEl = element.querySelector('.required');
+        const requiredHTML = requiredEl ? requiredEl.outerHTML : '';
+        // Set translated text and re-attach required marker if needed
+        element.innerHTML = `${t(key)}${requiredHTML ? ' ' + requiredHTML : ''}`;
     });
     
     // Update placeholders
@@ -239,6 +286,25 @@ function navigateTo(path) {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+}
+
+/**
+ * Check if given birthdate string indicates age under 18 as of June 27, 2026
+ * @param {string} birthdate - ISO date string (YYYY-MM-DD)
+ * @returns {boolean}
+ */
+function isUnder18(birthdate) {
+    if (!birthdate) return false;
+    const bd = new Date(birthdate + 'T00:00:00');
+    if (isNaN(bd)) return false;
+    // Target date: June 27, 2026
+    const targetDate = new Date('2026-06-27T00:00:00');
+    let age = targetDate.getFullYear() - bd.getFullYear();
+    const m = targetDate.getMonth() - bd.getMonth();
+    if (m < 0 || (m === 0 && targetDate.getDate() < bd.getDate())) {
+        age--;
+    }
+    return age < 18;
 }
 
 // ========================================
@@ -312,8 +378,8 @@ function showStep(stepNumber) {
     state.currentStep = stepNumber;
     updateProgress();
     
-    // Populate review step if on step 4
-    if (stepNumber === 4) {
+    // Populate review step if on step 6
+    if (stepNumber === 6) {
         populateReview();
     }
 }
@@ -354,8 +420,48 @@ function validateStep() {
         }
     });
     
+    // Additional conditional checks
+    try {
+        // If group field is shown and inGroup is yes, require groupName
+            if (state.currentStep === 5) {
+                const inGroup = document.querySelector('input[name="inGroup"]:checked')?.value;
+                if (inGroup === 'yes') {
+                    const groupName = document.getElementById('groupName');
+                    if (groupName && !groupName.value.trim()) {
+                        isValid = false;
+                        groupName.closest('.form-group').classList.add('has-error');
+                        groupName.classList.add('error');
+                    }
+                }
+            }
+
+            // If applicant is under 18 on June 27 2026, require parent contact fields on step 6
+            if (state.currentStep === 6) {
+                const parentName = document.getElementById('parentName');
+                const parentPhone = document.getElementById('parentPhone');
+                // Only validate if parent fields are visible/required
+                if (parentName && parentName.required && parentPhone && parentPhone.required) {
+                    if (!parentName.value.trim() || !parentPhone.value.trim()) {
+                        isValid = false;
+                        if (!parentName.value.trim()) {
+                            parentName.closest('.form-group').classList.add('has-error');
+                            parentName.classList.add('error');
+                        }
+                        if (!parentPhone.value.trim()) {
+                            parentPhone.closest('.form-group').classList.add('has-error');
+                            parentPhone.classList.add('error');
+                        }
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        // ignore and allow normal validation to surface other errors
+    }
+
     return isValid;
 }
+
 
 /**
  * Collect form data from all steps
@@ -363,14 +469,25 @@ function validateStep() {
  */
 function collectFormData() {
     const formData = {
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        company: document.getElementById('company').value.trim() || null,
-        role: document.getElementById('role').value.trim() || null,
-        interest: document.querySelector('input[name="interest"]:checked')?.value || null,
-        notes: document.getElementById('notes').value.trim() || null
+        volNo: document.getElementById('volNo')?.value.trim() || null,
+        firstNames: document.getElementById('firstNames')?.value.trim() || null,
+        lastName: document.getElementById('lastName')?.value.trim() || null,
+        birthdate: document.getElementById('birthdate')?.value || null,
+        address: document.getElementById('address')?.value.trim() || null,
+        postcode: document.getElementById('postcode')?.value.trim() || null,
+        city: document.getElementById('city')?.value.trim() || null,
+        country: document.getElementById('country')?.value || null,
+        phoneCountry: document.getElementById('phoneCountry')?.value || null,
+        phone: document.getElementById('phone')?.value.trim() || null,
+        previousVolunteer: document.querySelector('input[name="previousVolunteer"]:checked')?.value || null,
+        experience: document.getElementById('experience')?.value.trim() || null,
+        inGroup: document.querySelector('input[name="inGroup"]:checked')?.value || null,
+        groupName: document.getElementById('groupName')?.value.trim() || null,
+        remarks: document.getElementById('remarks')?.value.trim() || null,
+        parentName: document.getElementById('parentName')?.value.trim() || null,
+        parentPhone: document.getElementById('parentPhone')?.value.trim() || null
     };
-    
+
     return formData;
 }
 
@@ -379,17 +496,32 @@ function collectFormData() {
  */
 function populateReview() {
     const data = collectFormData();
-    
-    document.getElementById('review-name').textContent = data.name || '-';
-    document.getElementById('review-email').textContent = data.email || '-';
-    document.getElementById('review-company').textContent = data.company || '-';
-    document.getElementById('review-role').textContent = data.role || '-';
-    
-    // Translate interest value
-    const interestKey = `form.step3.option${['product', 'events', 'newsletter', 'other'].indexOf(data.interest) + 1}`;
-    document.getElementById('review-interest').textContent = data.interest ? t(interestKey) : '-';
-    
-    document.getElementById('review-notes').textContent = data.notes || '-';
+
+    document.getElementById('review-volNo').textContent = data.volNo || '-';
+    document.getElementById('review-firstNames').textContent = data.firstNames || '-';
+    document.getElementById('review-lastName').textContent = data.lastName || '-';
+    document.getElementById('review-birthdate').textContent = data.birthdate || '-';
+    document.getElementById('review-address').textContent = data.address || '-';
+    document.getElementById('review-postcode').textContent = data.postcode || '-';
+    document.getElementById('review-city').textContent = data.city || '-';
+    document.getElementById('review-country').textContent = data.country || '-';
+    document.getElementById('review-phone').textContent = `${data.phoneCountry || ''} ${data.phone || ''}`.trim() || '-';
+
+    document.getElementById('review-previousVolunteer').textContent = data.previousVolunteer || '-';
+    document.getElementById('review-experience').textContent = data.experience || '-';
+    document.getElementById('review-inGroup').textContent = data.inGroup || '-';
+    document.getElementById('review-groupName').textContent = data.groupName || '-';
+    document.getElementById('review-remarks').textContent = data.remarks || '-';
+
+    // Parent info show/hide
+    const parentSection = document.getElementById('review-parent');
+    if (isUnder18(data.birthdate)) {
+        if (parentSection) parentSection.style.display = 'block';
+        document.getElementById('review-parentName').textContent = data.parentName || '-';
+        document.getElementById('review-parentPhone').textContent = data.parentPhone || '-';
+    } else {
+        if (parentSection) parentSection.style.display = 'none';
+    }
 }
 
 /**
@@ -423,8 +555,8 @@ async function submitForm() {
         try {
             const small = {
                 id: docRef.id,
-                name: formData.name || null,
-                email: formData.email || null
+                name: `${formData.firstNames || ''} ${formData.lastName || ''}`.trim() || null,
+                phone: formData.phone || null
             };
             sessionStorage.setItem('lastSubmission', JSON.stringify(small));
         } catch (e) {
@@ -464,10 +596,13 @@ function resetApp() {
     state.formData = {};
     
     // Show landing view
-    switchView('landing');
-    
-    // Reset form to step 1
-    showStep(1);
+    // Navigate back to landing page (index.html)
+    if (window.location.pathname.endsWith('form.html')) {
+        // If currently on form page, reset to step 1 and keep user here
+        showStep(1);
+    } else {
+        window.location.href = 'index.html';
+    }
 }
 
 // ========================================
@@ -534,6 +669,53 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Group name toggle: show groupName input when inGroup === 'yes'
+        function updateGroupVisibility() {
+            const inGroup = document.querySelector('input[name="inGroup"]:checked')?.value;
+            const wrap = document.getElementById('groupNameWrap');
+            const groupName = document.getElementById('groupName');
+            if (inGroup === 'yes') {
+                if (wrap) wrap.style.display = 'block';
+                if (groupName) groupName.required = true;
+            } else {
+                if (wrap) wrap.style.display = 'none';
+                if (groupName) {
+                    groupName.required = false;
+                    groupName.value = '';
+                }
+            }
+        }
+        document.querySelectorAll('input[name="inGroup"]').forEach(r => r.addEventListener('change', updateGroupVisibility));
+        updateGroupVisibility();
+
+        // Birthdate -> parent contact visibility when under 18
+        const birthEl = document.getElementById('birthdate');
+        function updateParentVisibility() {
+            const val = birthEl?.value;
+            const container = document.getElementById('parentContact');
+            const parentName = document.getElementById('parentName');
+            const parentPhone = document.getElementById('parentPhone');
+            if (val && isUnder18(val)) {
+                if (container) container.style.display = 'block';
+                if (parentName) parentName.required = true;
+                if (parentPhone) parentPhone.required = true;
+            } else {
+                if (container) container.style.display = 'none';
+                if (parentName) {
+                    parentName.required = false;
+                    parentName.value = '';
+                }
+                if (parentPhone) {
+                    parentPhone.required = false;
+                    parentPhone.value = '';
+                }
+            }
+        }
+        if (birthEl) {
+            birthEl.addEventListener('change', updateParentVisibility);
+            updateParentVisibility();
+        }
+
         // Initialize progress
         updateProgress();
     }
@@ -546,9 +728,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (submission) {
             try {
                 const data = JSON.parse(submission);
-                const msgEl = document.querySelector('[data-i18n="confirmation.message"]');
-                if (msgEl) {
-                    // If Danish/English text contains full sentence, we keep translation but can append name
+                const confName = document.getElementById('conf-name');
+                if (confName && data.name) {
+                    confName.textContent = data.name;
                 }
             } catch (e) { /* ignore parsing errors */ }
         }
