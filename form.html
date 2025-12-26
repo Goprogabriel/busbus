@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form — BusBus</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher" role="navigation" aria-label="Language selection">
+        <button class="lang-btn" data-lang="da" aria-label="Switch to Danish" title="Dansk">🇩🇰</button>
+        <button class="lang-btn" data-lang="en" aria-label="Switch to English" title="English">🇬🇧</button>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+    <div class="container">
+        <section class="view active">
+            <div class="form-container">
+                <div class="progress-wrapper">
+                    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                    <div class="progress-text">
+                        <span data-i18n="form.step">Step</span>
+                        <span id="current-step">1</span> / <span id="total-steps">4</span>
+                        <span class="progress-percent" id="progress-percent">0%</span>
+                    </div>
+                </div>
+
+                <form id="wizard-form" novalidate>
+                    <!-- Step 1 -->
+                    <div class="form-step" data-step="1">
+                        <h2 data-i18n="form.step1.title">Personal Information</h2>
+                        <p class="step-description" data-i18n="form.step1.description">Let's start with the basics.</p>
+                        <div class="form-group">
+                            <label for="name" data-i18n="form.step1.name">Name <span class="required">*</span></label>
+                            <input type="text" id="name" name="name" required aria-required="true" data-i18n-placeholder="form.step1.namePlaceholder">
+                            <span class="error-message" data-i18n="form.errors.required"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-i18n="form.step1.email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required aria-required="true" data-i18n-placeholder="form.step1.emailPlaceholder">
+                            <span class="error-message" data-i18n="form.errors.email"></span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="form-step" data-step="2">
+                        <h2 data-i18n="form.step2.title">Professional Details</h2>
+                        <p class="step-description" data-i18n="form.step2.description">Tell us about your work (optional).</p>
+                        <div class="form-group">
+                            <label for="company" data-i18n="form.step2.company">Company</label>
+                            <input type="text" id="company" name="company" data-i18n-placeholder="form.step2.companyPlaceholder">
+                        </div>
+                        <div class="form-group">
+                            <label for="role" data-i18n="form.step2.role">Role</label>
+                            <input type="text" id="role" name="role" data-i18n-placeholder="form.step2.rolePlaceholder">
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="form-step" data-step="3">
+                        <h2 data-i18n="form.step3.title">Your Preferences</h2>
+                        <p class="step-description" data-i18n="form.step3.description">Help us understand your needs better.</p>
+                        <div class="form-group">
+                            <label data-i18n="form.step3.interest">What are you most interested in? <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="interest" value="product" required aria-required="true"><span data-i18n="form.step3.option1">Product Updates</span></label>
+                                <label class="radio-label"><input type="radio" name="interest" value="events"><span data-i18n="form.step3.option2">Events & Workshops</span></label>
+                                <label class="radio-label"><input type="radio" name="interest" value="newsletter"><span data-i18n="form.step3.option3">Newsletter</span></label>
+                                <label class="radio-label"><input type="radio" name="interest" value="other"><span data-i18n="form.step3.option4">Other</span></label>
+                            </div>
+                            <span class="error-message" data-i18n="form.errors.required"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes" data-i18n="form.step3.notes">Additional Notes</label>
+                            <textarea id="notes" name="notes" rows="4" data-i18n-placeholder="form.step3.notesPlaceholder"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Review -->
+                    <div class="form-step" data-step="4">
+                        <h2 data-i18n="form.step4.title">Review & Submit</h2>
+                        <p class="step-description" data-i18n="form.step4.description">Please review your information before submitting.</p>
+                        <div class="review-section">
+                            <h3 data-i18n="form.step1.title">Personal Information</h3>
+                            <dl class="review-list">
+                                <dt data-i18n="form.step1.name">Name</dt><dd id="review-name">-</dd>
+                                <dt data-i18n="form.step1.email">Email</dt><dd id="review-email">-</dd>
+                            </dl>
+                        </div>
+                        <div class="review-section">
+                            <h3 data-i18n="form.step2.title">Professional Details</h3>
+                            <dl class="review-list">
+                                <dt data-i18n="form.step2.company">Company</dt><dd id="review-company">-</dd>
+                                <dt data-i18n="form.step2.role">Role</dt><dd id="review-role">-</dd>
+                            </dl>
+                        </div>
+                        <div class="review-section">
+                            <h3 data-i18n="form.step3.title">Your Preferences</h3>
+                            <dl class="review-list">
+                                <dt data-i18n="form.step3.interest">Interest</dt><dd id="review-interest">-</dd>
+                                <dt data-i18n="form.step3.notes">Notes</dt><dd id="review-notes">-</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="form-navigation">
+                        <button type="button" id="btn-back" class="btn btn-secondary" data-i18n="form.back">Back</button>
+                        <button type="button" id="btn-next" class="btn btn-primary" data-i18n="form.next">Next</button>
+                        <button type="submit" id="btn-submit" class="btn btn-primary" style="display: none;" data-i18n="form.submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

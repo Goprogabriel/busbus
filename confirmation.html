@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation — BusBus</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher" role="navigation" aria-label="Language selection">
+        <button class="lang-btn" data-lang="da" aria-label="Switch to Danish" title="Dansk">🇩🇰</button>
+        <button class="lang-btn" data-lang="en" aria-label="Switch to English" title="English">🇬🇧</button>
+    </div>
+
+    <div class="container">
+        <section class="view active">
+            <div class="confirmation-content">
+                <div class="success-icon">✓</div>
+                <h1 data-i18n="confirmation.title">Thank You!</h1>
+                <p data-i18n="confirmation.message">Your submission has been received. We'll be in touch soon.</p>
+                <div style="display:flex;gap:12px;justify-content:center;margin-top:1.5rem;">
+                    <a href="index.html" class="btn btn-secondary" data-i18n="confirmation.reset">Start Over</a>
+                    <a href="form.html" class="btn btn-primary" data-i18n="form.next">Submit Another</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

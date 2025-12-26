@@ -153,7 +153,7 @@ const i18n = {
 // ========================================
 
 const state = {
-    currentView: 'landing',
+    // For multi-page setup we still track step and language
     currentStep: 1,
     totalSteps: 4,
     currentLanguage: localStorage.getItem('language') || 'en',
@@ -226,22 +226,9 @@ function showToast(message, type = 'success') {
  * Switch between views with fade animation
  * @param {string} viewName - Name of the view to show
  */
-function switchView(viewName) {
-    const currentView = document.querySelector('.view.active');
-    const nextView = document.getElementById(`view-${viewName}`);
-    
-    if (currentView) {
-        currentView.style.animation = 'fadeOut 0.3s forwards';
-        setTimeout(() => {
-            currentView.classList.remove('active');
-            currentView.style.animation = '';
-            nextView.classList.add('active');
-            state.currentView = viewName;
-        }, 300);
-    } else {
-        nextView.classList.add('active');
-        state.currentView = viewName;
-    }
+// No single-page view switching; navigation is done via separate HTML pages.
+function navigateTo(path) {
+    window.location.href = path;
 }
 
 /**
@@ -290,10 +277,12 @@ function updateProgress() {
     const progressFill = document.getElementById('progress-fill');
     const progressPercent = document.getElementById('progress-percent');
     const currentStepEl = document.getElementById('current-step');
+    const totalStepsEl = document.getElementById('total-steps');
     
     progressFill.style.width = `${progress}%`;
     progressPercent.textContent = `${Math.round(progress)}%`;
     currentStepEl.textContent = state.currentStep;
+    if (totalStepsEl) totalStepsEl.textContent = state.totalSteps;
 }
 
 /**
@@ -429,11 +418,23 @@ async function submitForm() {
         
         // Show success message
         showToast(t('toast.success'), 'success');
-        
-        // Switch to confirmation view
+
+        // Store a small summary in sessionStorage for the confirmation page
+        try {
+            const small = {
+                id: docRef.id,
+                name: formData.name || null,
+                email: formData.email || null
+            };
+            sessionStorage.setItem('lastSubmission', JSON.stringify(small));
+        } catch (e) {
+            console.warn('Could not save submission summary to sessionStorage', e);
+        }
+
+        // Redirect to confirmation page
         setTimeout(() => {
-            switchView('confirmation');
-        }, 1000);
+            window.location.href = 'confirmation.html';
+        }, 800);
         
     } catch (error) {
         console.error('Error submitting form:', error);
@@ -474,80 +475,89 @@ function resetApp() {
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Initialize language
+    // Initialize language on every page
     setLanguage(state.currentLanguage);
-    
-    // Language switcher
+
+    // Language switcher (present on all pages)
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             setLanguage(btn.dataset.lang);
         });
     });
-    
-    // Start button
-    document.getElementById('btn-start').addEventListener('click', () => {
-        switchView('form');
+
+    // Landing page: 'btn-start' links to form.html — no JS needed beyond translation
+    const startBtn = document.getElementById('btn-start');
+    if (startBtn) {
+        // anchor already navigates; ensure it has translated text
+        startBtn.href = 'form.html';
+    }
+
+    // Form page initialization
+    const wizardForm = document.getElementById('wizard-form');
+    if (wizardForm) {
+        // Show initial step
         showStep(1);
-    });
-    
-    // Back button
-    document.getElementById('btn-back').addEventListener('click', () => {
-        if (state.currentStep > 1) {
-            showStep(state.currentStep - 1);
-        }
-    });
-    
-    // Next button
-    document.getElementById('btn-next').addEventListener('click', () => {
-        if (validateStep()) {
-            if (state.currentStep < state.totalSteps) {
-                showStep(state.currentStep + 1);
-            }
-        }
-    });
-    
-    // Form submission
-    document.getElementById('wizard-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (validateStep()) {
-            submitForm();
-        }
-    });
-    
-    // Reset button
-    document.getElementById('btn-reset').addEventListener('click', () => {
-        resetApp();
-    });
-    
-    // Real-time validation: remove error state when user starts typing
-    document.querySelectorAll('input, textarea').forEach(field => {
-        field.addEventListener('input', () => {
-            const formGroup = field.closest('.form-group');
-            if (formGroup) {
-                formGroup.classList.remove('has-error');
-                field.classList.remove('error');
+
+        // Back button
+        document.getElementById('btn-back').addEventListener('click', () => {
+            if (state.currentStep > 1) showStep(state.currentStep - 1);
+        });
+
+        // Next button
+        document.getElementById('btn-next').addEventListener('click', () => {
+            if (validateStep()) {
+                if (state.currentStep < state.totalSteps) showStep(state.currentStep + 1);
             }
         });
-    });
-    
-    // Radio button validation
-    document.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.addEventListener('change', () => {
-            const formGroup = radio.closest('.form-group');
-            if (formGroup) {
-                formGroup.classList.remove('has-error');
-            }
+
+        // Form submission
+        wizardForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (validateStep()) submitForm();
         });
-    });
-    
-    // Initialize progress bar
-    updateProgress();
-    
+
+        // Real-time validation removal
+        document.querySelectorAll('input, textarea').forEach(field => {
+            field.addEventListener('input', () => {
+                const formGroup = field.closest('.form-group');
+                if (formGroup) {
+                    formGroup.classList.remove('has-error');
+                    field.classList.remove('error');
+                }
+            });
+        });
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const formGroup = radio.closest('.form-group');
+                if (formGroup) formGroup.classList.remove('has-error');
+            });
+        });
+
+        // Initialize progress
+        updateProgress();
+    }
+
+    // Confirmation page: nothing complicated; allow Start Over navigation
+    const confirmation = document.querySelector('.confirmation-content');
+    if (confirmation) {
+        // Optionally show name from session storage
+        const submission = sessionStorage.getItem('lastSubmission');
+        if (submission) {
+            try {
+                const data = JSON.parse(submission);
+                const msgEl = document.querySelector('[data-i18n="confirmation.message"]');
+                if (msgEl) {
+                    // If Danish/English text contains full sentence, we keep translation but can append name
+                }
+            } catch (e) { /* ignore parsing errors */ }
+        }
+    }
+
 });
 
 // ========================================
 // EXPORTS (for potential future use)
 // ========================================
 
-export { setLanguage, switchView, showToast, t };
+export { setLanguage, navigateTo, showToast, t };
