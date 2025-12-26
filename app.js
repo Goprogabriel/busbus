@@ -54,25 +54,22 @@ const i18n = {
                 emailPlaceholder: "Indtast din email"
             },
             step2: {
-                title: "Professionelle Detaljer",
-                description: "Fortæl os om dit arbejde (valgfrit).",
-                company: "Virksomhed",
-                companyPlaceholder: "Indtast virksomhedsnavn",
-                role: "Rolle",
-                rolePlaceholder: "Indtast din rolle"
+                title: "Adresse",
+                description: "Hvor bor du?"
             },
             step3: {
-                title: "Dine Præferencer",
-                description: "Hjælp os med at forstå dine behov bedre.",
-                interest: "Hvad er du mest interesseret i?",
-                option1: "Produktopdateringer",
-                option2: "Events & Workshops",
-                option3: "Nyhedsbrev",
-                option4: "Andet",
-                notes: "Yderligere Noter",
-                notesPlaceholder: "Skriv eventuelle yderligere kommentarer..."
+                title: "Kontaktoplysninger",
+                description: "Hvordan kan vi nå dig?"
             },
             step4: {
+                title: "Frivillig Erfaring",
+                description: "Fortæl os om din baggrund"
+            },
+            step5: {
+                title: "Gruppe & Bemærkninger",
+                description: "Yderligere information"
+            },
+            step6: {
                 title: "Gennemse & Indsend",
                 description: "Venligst gennemse dine oplysninger før indsendelse."
             },
@@ -133,25 +130,22 @@ const i18n = {
                 emailPlaceholder: "Enter your email"
             },
             step2: {
-                title: "Professional Details",
-                description: "Tell us about your work (optional).",
-                company: "Company",
-                companyPlaceholder: "Enter company name",
-                role: "Role",
-                rolePlaceholder: "Enter your role"
+                title: "Address",
+                description: "Where do you live?"
             },
             step3: {
-                title: "Your Preferences",
-                description: "Help us understand your needs better.",
-                interest: "What are you most interested in?",
-                option1: "Product Updates",
-                option2: "Events & Workshops",
-                option3: "Newsletter",
-                option4: "Other",
-                notes: "Additional Notes",
-                notesPlaceholder: "Write any additional comments..."
+                title: "Contact Information",
+                description: "How can we reach you?"
             },
             step4: {
+                title: "Volunteer Experience",
+                description: "Tell us about your background"
+            },
+            step5: {
+                title: "Group & Remarks",
+                description: "Additional information"
+            },
+            step6: {
                 title: "Review & Submit",
                 description: "Please review your information before submitting."
             },
@@ -200,7 +194,7 @@ const state = {
     // For multi-page setup we still track step and language
     currentStep: 1,
     totalSteps: 6,
-    currentLanguage: localStorage.getItem('language') || 'en',
+    currentLanguage: localStorage.getItem('language') || 'da',
     formData: {}
 };
 
