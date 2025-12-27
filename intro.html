@@ -22,18 +22,38 @@
             <div class="landing-content">
                 <h1 class="headline" data-i18n="intro.headline">People-VOL-nr.</h1>
                 <div class="description">
-                    <div data-i18n="intro.p1"></div>
+                    <div class="form-container intro-card">
+                        <div data-i18n="intro.p1"></div>
 
-                    <h2 data-i18n="intro.findTitle">Jeg HAR tidligere været frivillig på Roskilde Festival og har en People-VOL-profil:</h2>
-                    <div data-i18n="intro.findText"></div>
-                    <p><a class="btn btn-primary" id="btn-find" href="https://people-vol.roskilde-festival.dk/" target="_blank" rel="noopener noreferrer" data-i18n="intro.findBtn">Find mit People-VOL-nummer</a></p>
+                        <div class="form-group">
+                            <p class="intro-question" data-i18n="intro.askPreviouslyVolunteer"></p>
+                            <div class="radio-group" role="radiogroup" aria-label="Previously volunteered">
+                                <label class="radio-label">
+                                    <input type="radio" name="introPreviouslyVolunteer" value="yes" aria-checked="false">
+                                    <span data-i18n="form.yes">Ja</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="introPreviouslyVolunteer" value="no" aria-checked="false">
+                                    <span data-i18n="form.no">Nej</span>
+                                </label>
+                            </div>
+                        </div>
 
-                    <h2 data-i18n="intro.createTitle">Jeg har IKKE tidligere været frivillig og har ikke en People-VOL-profil:</h2>
-                    <div data-i18n="intro.createText"></div>
-                    <p><a class="btn btn-primary" id="btn-create" href="https://people-vol.roskilde-festival.dk/bliv-frivillig/" target="_blank" rel="noopener noreferrer" data-i18n="intro.createBtn">Opret People-VOL-profil</a></p>
+                        <div id="intro-find-section" style="display:none;">
+                            <h2 data-i18n="intro.findTitle">Jeg HAR tidligere været frivillig på Roskilde Festival og har en People-VOL-profil:</h2>
+                            <div data-i18n="intro.findText"></div>
+                            <p><a class="btn btn-primary" id="btn-find" href="https://people-vol.roskilde-festival.dk/" target="_blank" rel="noopener noreferrer" data-i18n="intro.findBtn">Find mit People-VOL-nummer</a></p>
+                        </div>
 
-                    <h2 data-i18n="intro.startTitle">Start tilmelding som frivillig hos BUSBUS:</h2>
-                    <p><a class="btn btn-secondary" id="btn-start-form" href="form.html" data-i18n="intro.startBtn">Start tilmelding</a></p>
+                        <div id="intro-create-section" style="display:none;">
+                            <h2 data-i18n="intro.createTitle">Jeg har IKKE tidligere været frivillig og har ikke en People-VOL-profil:</h2>
+                            <div data-i18n="intro.createText"></div>
+                            <p><a class="btn btn-primary" id="btn-create" href="https://people-vol.roskilde-festival.dk/bliv-frivillig/" target="_blank" rel="noopener noreferrer" data-i18n="intro.createBtn">Opret People-VOL-profil</a></p>
+                        </div>
+
+                        <h2 data-i18n="intro.startTitle">Start tilmelding som frivillig hos BUSBUS:</h2>
+                        <p style="text-align:center"><a class="btn btn-secondary" id="btn-start-form" href="form.html" data-i18n="intro.startBtn">Start tilmelding</a></p>
+                    </div>
                 </div>
             </div>
         </section>

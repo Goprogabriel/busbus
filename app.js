@@ -25,6 +25,7 @@ const i18n = {
         intro: {
             headline: "People-VOL-nr.",
             p1: `<p>Alle frivillige på Roskilde Festival skal have en profil i festivalens interne system kaldet People-VOL. Alle med en profil i systemet har et individuelt People-VOL-nummer. Nummeret skal du bruge for at kunne tilmelde dig som frivillig hos BUSBUS.</p>`,
+            askPreviouslyVolunteer: "Har du tidligere været frivillig på Roskilde Festival?",
             findTitle: "Jeg HAR tidligere været frivillig på Roskilde Festival og har en People-VOL-profil:",
             findText: `<p>Har du tidligere været frivillig på Roskilde Festival, så har du allerede et People-VOL-nummer.</p>
                        <p>Kan du ikke huske dit People-VOL-nummer, kan du finde det ved at trykke på den blå bjælke 'Find mit People-VOL-nummer' nedenunder. Husk at notere nummeret, så du har det, når du skal indtaste det i vores system.</p>`,
@@ -194,6 +195,20 @@ const i18n = {
                 <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
             `,
             cta: "Start"
+        },
+        intro: {
+            headline: "People-VOL-no.",
+            p1: `<p>All volunteers at Roskilde Festival must have a profile in the festival's internal system called People-VOL. Everyone with a profile in the system has an individual People-VOL number. You will need this number to register as a volunteer at BUSBUS.</p>`,
+            askPreviouslyVolunteer: "Have you previously volunteered at Roskilde Festival?",
+            findTitle: "I HAVE previously volunteered at Roskilde Festival and already have a People-VOL profile:",
+            findText: `<p>If you have volunteered before at Roskilde Festival, you already have a People-VOL number.</p>
+                       <p>If you don't remember your People-VOL number, you can find it by clicking the blue button 'Find my People-VOL number' below. Remember to note the number so you have it when entering it into our system.</p>`,
+            findBtn: "Find my People-VOL number",
+            createTitle: "I have NOT volunteered before and do not have a People-VOL profile:",
+            createText: `<p>If you have NOT volunteered at Roskilde Festival before, you must first create a profile in People-VOL before you can continue your registration at BUSBUS. Remember to note your new People-VOL number. Create a profile by clicking the button below.</p>`,
+            createBtn: "Create People-VOL profile",
+            startTitle: "Start registration as a volunteer at BUSBUS:",
+            startBtn: "Start registration"
         },
         form: {
             step: "Step",
@@ -776,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure intro page content is populated (works around timing/lookup issues)
     function populateIntroPage() {
         const keys = [
-            'intro.headline', 'intro.p1',
+            'intro.headline', 'intro.p1', 'intro.askPreviouslyVolunteer',
             'intro.findTitle', 'intro.findText', 'intro.findBtn',
             'intro.createTitle', 'intro.createText', 'intro.createBtn',
             'intro.startTitle', 'intro.startBtn'
@@ -794,6 +809,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        // Setup show/hide for the intro 'previous volunteer' question
+        const findSection = document.getElementById('intro-find-section');
+        const createSection = document.getElementById('intro-create-section');
+        const updateIntroVisibility = () => {
+            const selected = document.querySelector('input[name="introPreviouslyVolunteer"]:checked')?.value;
+            if (selected === 'yes') {
+                if (findSection) findSection.style.display = 'block';
+                if (createSection) createSection.style.display = 'none';
+            } else if (selected === 'no') {
+                if (findSection) findSection.style.display = 'none';
+                if (createSection) createSection.style.display = 'block';
+            } else {
+                if (findSection) findSection.style.display = 'none';
+                if (createSection) createSection.style.display = 'none';
+            }
+        };
+
+        document.querySelectorAll('input[name="introPreviouslyVolunteer"]').forEach(r => {
+            r.addEventListener('change', updateIntroVisibility);
+        });
+
+        // Ensure initial visibility
+        updateIntroVisibility();
     }
 
     // Language switcher (present on all pages)
