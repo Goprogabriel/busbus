@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - BusBus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #FAFAFA;
+            --color-surface: #FFFFFF;
+            --color-primary: #2C3E50;
+            --color-primary-hover: #1A252F;
+            --color-accent: #3498DB;
+            --color-accent-hover: #2980B9;
+            --color-text: #2C3E50;
+            --color-text-light: #7F8C8D;
+            --color-border: #E0E0E0;
+            --color-error: #E74C3C;
+            --color-success: #27AE60;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--spacing-md) var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .nav-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .nav-tab {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: none;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-tab:hover {
+            background: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .nav-tab.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .user-email {
+            font-size: 0.875rem;
+            color: var(--color-text-light);
+        }
+
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-bg);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: #E8E8E8;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 57px);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow: auto;
+            padding: var(--spacing-lg);
+        }
+
+        .side-panel {
+            width: 400px;
+            background: var(--color-surface);
+            border-left: 1px solid var(--color-border);
+            overflow-y: auto;
+            padding: var(--spacing-lg);
+            display: none;
+        }
+
+        .side-panel.open {
+            display: block;
+        }
+
+        /* Controls */
+        .controls {
+            background: var(--color-surface);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .controls-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .search-box {
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-family: inherit;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            background: white;
+            font-family: inherit;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        /* Table */
+        .table-wrapper {
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        thead {
+            background: var(--color-bg);
+            position: sticky;
+            top: 0;
+        }
+
+        th {
+            padding: var(--spacing-md);
+            text-align: left;
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--color-border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text);
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        tbody tr:hover {
+            background: var(--color-bg);
+        }
+
+        tbody tr.selected {
+            background: #E3F2FD;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-da {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .badge-en {
+            background: #F3E5F5;
+            color: #7B1FA2;
+        }
+
+        .badge-group {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--spacing-lg);
+            color: var(--color-text-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--color-text-light);
+        }
+
+        /* Side Panel */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .panel-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .close-panel {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--color-text-light);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-panel:hover {
+            color: var(--color-text);
+        }
+
+        .detail-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 0.875rem;
+            color: var(--color-text);
+            padding: var(--spacing-sm);
+            background: var(--color-bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .detail-value:last-child {
+            margin-bottom: 0;
+        }
+
+        .answer-item {
+            padding: var(--spacing-md);
+            background: var(--color-bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .answer-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .answer-question {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .answer-text {
+            font-size: 0.875rem;
+            color: var(--color-text);
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .btn-danger {
+            background: var(--color-error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #C0392B;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: var(--spacing-md);
+            background: var(--color-success);
+            color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.error {
+            background: var(--color-error);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .note-text {
+            font-size: 0.875rem;
+            color: var(--color-text);
+            line-height: 1.5;
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md);
+            background: var(--color-bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .toggle-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #4285f4;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        .edit-field {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-family: inherit;
+            background: var(--color-surface);
+        }
+
+        .edit-field:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        textarea.edit-field {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="nav-title">📊 BusBus Admin</div>
+            <div class="nav-tabs">
+                <a href="admin.html" class="nav-tab active">Besvarelser</a>
+                <a href="stats.html" class="nav-tab">Statistik</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <span class="user-email" id="userEmail"></span>
+            <button class="btn btn-secondary" id="logoutBtn">Log ud</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Controls -->
+            <div class="controls">
+                <div class="controls-row">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="🔍 Søg efter navn, adresse, tlf...">
+                    </div>
+                    <select id="languageFilter">
+                        <option value="">Alle sprog</option>
+                        <option value="da">Dansk</option>
+                        <option value="en">English</option>
+                    </select>
+                    <select id="groupFilter">
+                        <option value="">Alle grupper</option>
+                        <option value="no">Ingen gruppe</option>
+                    </select>
+                    <select id="ageFilter">
+                        <option value="">Alle aldre</option>
+                        <option value="under18">Under 18</option>
+                        <option value="over18">18 og over</option>
+                    </select>
+                    <button class="btn btn-secondary" id="refreshBtn">🔄</button>
+                </div>
+                <div class="controls-row">
+                    <select id="volFilter">
+                        <option value="">VOL status</option>
+                        <option value="yes">Oprettet i VOL</option>
+                        <option value="no">Ikke i VOL</option>
+                    </select>
+                    <select id="holdFilter">
+                        <option value="">Hold status</option>
+                        <option value="yes">På hold</option>
+                        <option value="no">Ikke på hold</option>
+                    </select>
+                    <select id="waitlistFilter">
+                        <option value="">Venteliste</option>
+                        <option value="yes">På venteliste</option>
+                        <option value="no">Ikke på venteliste</option>
+                    </select>
+                    <div style="font-size: 0.875rem; color: var(--color-text-light); margin-left: auto;">
+                        <span id="resultCount">0</span> resultater
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <div class="loading" id="loading">Henter data...</div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <h3>Ingen besvarelser fundet</h3>
+                    <p>Der er endnu ikke nogen besvarelser i databasen.</p>
+                </div>
+                <div class="table-container" id="tableContainer" style="display: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vol nr</th>
+                                <th>Fornavn og mellemnavn</th>
+                                <th>Efternavn</th>
+                                <th>Fødselsdato</th>
+                                <th>Alder</th>
+                                <th>By</th>
+                                <th>Land</th>
+                                <th>Tlf nr</th>
+                                <th>Mail</th>
+                                <th>VOL</th>
+                                <th>Hold</th>
+                                <th>Gruppe</th>
+                                <th>Venteliste</th>
+                                <th>Bruger note</th>
+                                <th>Admin note</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel" id="sidePanel">
+            <div class="panel-header">
+                <div class="panel-title">Person</div>
+                <button class="close-panel" id="closePanel">&times;</button>
+            </div>
+
+            <div id="panelContent"></div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, deleteDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPZD1qOVmUAqiRKMA2EIy75vIapkjZpTA",
+            authDomain: "busbus-a4556.firebaseapp.com",
+            projectId: "busbus-a4556",
+            storageBucket: "busbus-a4556.firebasestorage.app",
+            messagingSenderId: "986020652124",
+            appId: "1:986020652124:web:1beeceac928db31c823299",
+            measurementId: "G-20L316JRVP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let allSubmissions = [];
+        let filteredSubmissions = [];
+        let selectedId = null;
+
+        const loading = document.getElementById('loading');
+        const emptyState = document.getElementById('emptyState');
+        const tableContainer = document.getElementById('tableContainer');
+        const tableBody = document.getElementById('tableBody');
+        const sidePanel = document.getElementById('sidePanel');
+        const notification = document.getElementById('notification');
+
+        // Check authentication
+        async function checkAuth() {
+            return new Promise((resolve) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    try {
+                        const authDoc = await getDoc(doc(db, 'auth', user.uid));
+                        if (!authDoc.exists() || authDoc.data().user !== user.uid) {
+                            await signOut(auth);
+                            window.location.href = 'login.html';
+                            return;
+                        }
+
+                        document.getElementById('userEmail').textContent = user.email;
+                        resolve(user);
+                    } catch (error) {
+                        console.error('Error checking auth:', error);
+                        window.location.href = 'login.html';
+                    }
+                });
+            });
+        }
+
+        // Load submissions
+        async function loadSubmissions() {
+            try {
+                loading.style.display = 'block';
+                tableContainer.style.display = 'none';
+                emptyState.style.display = 'none';
+
+                const q = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                
+                allSubmissions = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                applyFilters();
+                renderTable();
+
+                loading.style.display = 'none';
+                
+                if (allSubmissions.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    tableContainer.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                showNotification('Fejl ved indlæsning af data', 'error');
+                loading.style.display = 'none';
+            }
+        }
+
+        // Calculate age from birthdate
+        function calculateAge(birthdate) {
+            if (!birthdate) return '';
+            const today = new Date();
+            const birth = new Date(birthdate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age + ' år';
+        }
+
+        // Calculate age as number for filtering
+        function calculateAgeNumber(birthdate) {
+            if (!birthdate) return null;
+            const today = new Date();
+            const birth = new Date(birthdate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        // Extract field from answers or metadata
+        function getField(submission, field) {
+            // First check if it's a metadata field
+            if (field === 'adminNote') {
+                return submission.metadata?.note || '';
+            }
+            if (field === 'createdInVol') {
+                return submission.metadata?.createdInVol || false;
+            }
+            if (field === 'onHold') {
+                return submission.metadata?.onHold || false;
+            }
+            if (field === 'inGroup') {
+                return submission.metadata?.inGroup || false;
+            }
+            if (field === 'onWaitlist') {
+                return submission.metadata?.onWaitlist || false;
+            }
+
+            // Then check answers object
+            if (!submission.answers) return '';
+            
+            // Direct field access for new structure
+            const directFields = {
+                volNo: 'volNo',
+                firstName: 'firstNames',
+                lastName: 'lastName',
+                birthdate: 'birthdate',
+                address: 'address',
+                zipCode: 'postcode',
+                city: 'city',
+                country: 'country',
+                phone: 'phone',
+                email: 'email',
+                group: 'groupName',
+                note: 'remarks',
+                phoneCountry: 'phoneCountry'
+            };
+
+            if (directFields[field] && submission.answers[directFields[field]]) {
+                return submission.answers[directFields[field]];
+            }
+
+            return '';
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const languageFilter = document.getElementById('languageFilter').value;
+            const groupFilter = document.getElementById('groupFilter').value;
+            const ageFilter = document.getElementById('ageFilter').value;
+            const volFilter = document.getElementById('volFilter').value;
+            const holdFilter = document.getElementById('holdFilter').value;
+            const waitlistFilter = document.getElementById('waitlistFilter').value;
+
+            // Get all unique groups for the dropdown
+            const allGroups = new Set();
+            allSubmissions.forEach(s => {
+                const groupName = getField(s, 'group');
+                if (groupName) allGroups.add(groupName);
+            });
+
+            // Update group filter options dynamically
+            const groupSelect = document.getElementById('groupFilter');
+            const currentValue = groupSelect.value;
+            groupSelect.innerHTML = '<option value="">Alle grupper</option><option value="no">Ingen gruppe</option>';
+            Array.from(allGroups).sort().forEach(group => {
+                const option = document.createElement('option');
+                option.value = group;
+                option.textContent = group;
+                groupSelect.appendChild(option);
+            });
+            groupSelect.value = currentValue;
+
+            filteredSubmissions = allSubmissions.filter(submission => {
+                // Search filter
+                if (searchTerm) {
+                    const searchableText = JSON.stringify(submission.answers).toLowerCase() + 
+                                          JSON.stringify(submission.metadata || {}).toLowerCase();
+                    if (!searchableText.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+
+                // Language filter
+                if (languageFilter && submission.language !== languageFilter) {
+                    return false;
+                }
+
+                // Group filter
+                if (groupFilter) {
+                    const groupName = getField(submission, 'group');
+                    if (groupFilter === 'no' && groupName) return false;
+                    if (groupFilter !== 'no' && groupFilter !== groupName) return false;
+                }
+
+                // Age filter
+                if (ageFilter) {
+                    const birthdate = getField(submission, 'birthdate');
+                    const age = calculateAgeNumber(birthdate);
+                    if (age !== null) {
+                        if (ageFilter === 'under18' && age >= 18) return false;
+                        if (ageFilter === 'over18' && age < 18) return false;
+                    }
+                }
+
+                // VOL filter
+                if (volFilter) {
+                    const createdInVol = getField(submission, 'createdInVol');
+                    if (volFilter === 'yes' && !createdInVol) return false;
+                    if (volFilter === 'no' && createdInVol) return false;
+                }
+
+                // Hold filter
+                if (holdFilter) {
+                    const onHold = getField(submission, 'onHold');
+                    if (holdFilter === 'yes' && !onHold) return false;
+                    if (holdFilter === 'no' && onHold) return false;
+                }
+
+                // Waitlist filter
+                if (waitlistFilter) {
+                    const onWaitlist = getField(submission, 'onWaitlist');
+                    if (waitlistFilter === 'yes' && !onWaitlist) return false;
+                    if (waitlistFilter === 'no' && onWaitlist) return false;
+                }
+
+                return true;
+            });
+
+            document.getElementById('resultCount').textContent = filteredSubmissions.length;
+        }
+
+        // Render table
+        function renderTable() {
+            if (filteredSubmissions.length === 0) {
+                emptyState.style.display = 'block';
+                tableContainer.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            tableContainer.style.display = 'block';
+
+            tableBody.innerHTML = filteredSubmissions.map((submission, index) => {
+                const firstName = getField(submission, 'firstName');
+                const lastName = getField(submission, 'lastName');
+                const birthdate = getField(submission, 'birthdate');
+                const age = calculateAge(birthdate);
+                const city = getField(submission, 'city');
+                const country = getField(submission, 'country');
+                const phone = getField(submission, 'phone');
+                const email = getField(submission, 'email');
+                const group = getField(submission, 'group');
+                const note = getField(submission, 'note');
+                const adminNote = getField(submission, 'adminNote');
+                const createdInVol = getField(submission, 'createdInVol');
+                const onHold = getField(submission, 'onHold');
+                const inGroup = getField(submission, 'inGroup');
+                const onWaitlist = getField(submission, 'onWaitlist');
+                const volNr = getField(submission, 'volNo') || submission.id.slice(0, 6);
+
+                return `
+                    <tr onclick="selectRow('${submission.id}')" class="${selectedId === submission.id ? 'selected' : ''}">
+                        <td>${volNr}</td>
+                        <td>${firstName || '-'}</td>
+                        <td>${lastName || '-'}</td>
+                        <td>${birthdate || '-'}</td>
+                        <td>${age || '-'}</td>
+                        <td>${city || '-'}</td>
+                        <td>${country || '-'}</td>
+                        <td>${phone || '-'}</td>
+                        <td>${email || '-'}</td>
+                        <td>${createdInVol ? '✓' : '-'}</td>
+                        <td>${onHold ? '✓' : '-'}</td>
+                        <td>${group ? '<span class="badge badge-group">' + group + '</span>' : '-'}</td>
+                        <td>${onWaitlist ? '✓' : '-'}</td>
+                        <td>${note ? note.substring(0, 20) + (note.length > 20 ? '...' : '') : '-'}</td>
+                        <td>${adminNote ? adminNote.substring(0, 20) + (adminNote.length > 20 ? '...' : '') : '-'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Select row and show detail panel
+        window.selectRow = function(id) {
+            selectedId = id;
+            renderTable();
+            showDetailPanel(id);
+        };
+
+        // Show detail panel
+        function showDetailPanel(id) {
+            const submission = allSubmissions.find(s => s.id === id);
+            if (!submission) return;
+
+            const firstName = getField(submission, 'firstName');
+            const lastName = getField(submission, 'lastName');
+            const birthdate = getField(submission, 'birthdate');
+            const address = getField(submission, 'address');
+            const zipCode = getField(submission, 'zipCode');
+            const city = getField(submission, 'city');
+            const country = getField(submission, 'country');
+            const phone = getField(submission, 'phone');
+            const phoneCountry = getField(submission, 'phoneCountry');
+            const email = getField(submission, 'email');
+            const group = getField(submission, 'group');
+            const note = getField(submission, 'note');
+            const volNr = getField(submission, 'volNo') || submission.id.slice(0, 6);
+
+            // Get metadata fields
+            const isCreatedInVol = submission.metadata?.createdInVol || false;
+            const isOnHold = submission.metadata?.onHold || false;
+            const isInGroup = submission.metadata?.inGroup || false;
+            const isOnWaitlist = submission.metadata?.onWaitlist || false;
+            const metaNote = submission.metadata?.note || '';
+
+            const panelContent = document.getElementById('panelContent');
+            panelContent.innerHTML = `
+                <!-- Status Toggles -->
+                <div class="detail-section">
+                    <div class="toggle-group">
+                        <label>Oprettet i VOL</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-createdInVol" ${isCreatedInVol ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-group">
+                        <label>Er sat på hold</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-onHold" ${isOnHold ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-group">
+                        <label>I gruppe med nogen</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-inGroup" ${isInGroup ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-group">
+                        <label>Venteliste</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-waitlist" ${isOnWaitlist ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Note -->
+                <div class="detail-section">
+                    <div class="detail-label">Note</div>
+                    <textarea class="edit-field" id="edit-metaNote" placeholder="Skriv en note...">${metaNote}</textarea>
+                </div>
+
+                <!-- Editable Fields -->
+                <div class="detail-section">
+                    <div class="detail-label">Vol nr.</div>
+                    <input type="text" class="edit-field" id="edit-volNo" value="${volNr}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Fornavn og mellemnavn</div>
+                    <input type="text" class="edit-field" id="edit-firstName" value="${firstName || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Efternavn</div>
+                    <input type="text" class="edit-field" id="edit-lastName" value="${lastName || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Fødselsdato</div>
+                    <input type="date" class="edit-field" id="edit-birthdate" value="${birthdate || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Adresse</div>
+                    <input type="text" class="edit-field" id="edit-address" value="${address || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Postnummer</div>
+                    <input type="text" class="edit-field" id="edit-zipCode" value="${zipCode || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">By</div>
+                    <input type="text" class="edit-field" id="edit-city" value="${city || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Land</div>
+                    <input type="text" class="edit-field" id="edit-country" value="${country || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Telefon</div>
+                    <input type="text" class="edit-field" id="edit-phone" value="${phone || ''}" placeholder="12345678">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Email</div>
+                    <input type="email" class="edit-field" id="edit-email" value="${email || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Gruppe navn</div>
+                    <input type="text" class="edit-field" id="edit-group" value="${group || ''}">
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Bemærkninger</div>
+                    <textarea class="edit-field" id="edit-note">${note || ''}</textarea>
+                </div>
+
+                <div class="panel-actions">
+                    <button class="btn btn-danger" onclick="deleteSubmission('${id}')">Slet profil</button>
+                    <button class="btn btn-success" onclick="updateSubmission('${id}')">Opdater</button>
+                </div>
+            `;
+
+            sidePanel.classList.add('open');
+        }
+
+        // Update submission
+        window.updateSubmission = async function(id) {
+            try {
+                const submission = allSubmissions.find(s => s.id === id);
+                if (!submission) return;
+
+                // Get updated values
+                const updatedAnswers = {
+                    ...submission.answers,
+                    volNo: document.getElementById('edit-volNo').value,
+                    firstNames: document.getElementById('edit-firstName').value,
+                    lastName: document.getElementById('edit-lastName').value,
+                    birthdate: document.getElementById('edit-birthdate').value,
+                    address: document.getElementById('edit-address').value,
+                    postcode: document.getElementById('edit-zipCode').value,
+                    city: document.getElementById('edit-city').value,
+                    country: document.getElementById('edit-country').value,
+                    phone: document.getElementById('edit-phone').value,
+                    email: document.getElementById('edit-email').value,
+                    groupName: document.getElementById('edit-group').value,
+                    remarks: document.getElementById('edit-note').value
+                };
+
+                // Get metadata
+                const metadata = {
+                    createdInVol: document.getElementById('toggle-createdInVol').checked,
+                    onHold: document.getElementById('toggle-onHold').checked,
+                    inGroup: document.getElementById('toggle-inGroup').checked,
+                    onWaitlist: document.getElementById('toggle-waitlist').checked,
+                    note: document.getElementById('edit-metaNote').value
+                };
+
+                // Update Firestore
+                await updateDoc(doc(db, 'submissions', id), {
+                    answers: updatedAnswers,
+                    metadata: metadata,
+                    updatedAt: new Date()
+                });
+
+                showNotification('Besvarelse opdateret!');
+                await loadSubmissions();
+                showDetailPanel(id); // Refresh panel
+            } catch (error) {
+                console.error('Error updating submission:', error);
+                showNotification('Fejl ved opdatering', 'error');
+            }
+        };
+
+        // Delete submission
+        window.deleteSubmission = async function(id) {
+            if (!confirm('Er du sikker på at du vil slette denne besvarelse?')) return;
+
+            try {
+                await deleteDoc(doc(db, 'submissions', id));
+                showNotification('Besvarelse slettet');
+                sidePanel.classList.remove('open');
+                selectedId = null;
+                loadSubmissions();
+            } catch (error) {
+                console.error('Error deleting submission:', error);
+                showNotification('Fejl ved sletning', 'error');
+            }
+        };
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification show';
+            if (type === 'error') {
+                notification.classList.add('error');
+            }
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event listeners
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById('closePanel').addEventListener('click', () => {
+            sidePanel.classList.remove('open');
+            selectedId = null;
+            renderTable();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('languageFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('groupFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('ageFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('volFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('holdFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('waitlistFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('refreshBtn').addEventListener('click', loadSubmissions);
+
+        // Initialize
+        checkAuth().then(() => {
+            loadSubmissions();
+        });
+    </script>
+</body>
+</html>

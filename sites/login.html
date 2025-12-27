@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - BusBus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-size: 14px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🔐 Admin Login</h1>
+            <p>Log ind for at administrere besvarelser</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Adgangskode</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn" id="loginBtn">Log ind</button>
+        </form>
+
+        <div class="loading" id="loading">Logger ind...</div>
+
+        <div class="back-link">
+            <a href="../index.html">← Tilbage til forsiden</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase konfiguration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPZD1qOVmUAqiRKMA2EIy75vIapkjZpTA",
+            authDomain: "busbus-a4556.firebaseapp.com",
+            projectId: "busbus-a4556",
+            storageBucket: "busbus-a4556.firebasestorage.app",
+            messagingSenderId: "986020652124",
+            appId: "1:986020652124:web:1beeceac928db31c823299",
+            measurementId: "G-20L316JRVP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const form = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+        const loginBtn = document.getElementById('loginBtn');
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+        }
+
+        function hideError() {
+            errorMessage.classList.remove('show');
+        }
+
+        async function checkIfAdmin(uid) {
+            try {
+                const authDoc = await getDoc(doc(db, 'auth', uid));
+                return authDoc.exists() && authDoc.data().user === uid;
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                return false;
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            loginBtn.disabled = true;
+            loading.classList.add('show');
+
+            try {
+                // Log ind med Firebase Authentication
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Tjek om brugeren er admin
+                const isAdmin = await checkIfAdmin(user.uid);
+
+                if (isAdmin) {
+                    // Gem login status
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    sessionStorage.setItem('adminUid', user.uid);
+                    
+                    // Redirect til admin dashboard
+                    window.location.href = 'admin.html';
+                } else {
+                    // Ikke autoriseret som admin
+                    await auth.signOut();
+                    showError('Du har ikke adgang til admin panelet.');
+                    loginBtn.disabled = false;
+                    loading.classList.remove('show');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                let message = 'Der opstod en fejl ved login.';
+                
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        message = 'Ugyldig email adresse.';
+                        break;
+                    case 'auth/user-disabled':
+                        message = 'Denne bruger er deaktiveret.';
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        message = 'Forkert email eller adgangskode.';
+                        break;
+                    case 'auth/invalid-credential':
+                        message = 'Forkert email eller adgangskode.';
+                        break;
+                    case 'auth/too-many-requests':
+                        message = 'For mange mislykkede forsøg. Prøv igen senere.';
+                        break;
+                }
+                
+                showError(message);
+                loginBtn.disabled = false;
+                loading.classList.remove('show');
+            }
+        });
+
+        // Tjek om brugeren allerede er logget ind
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const isAdmin = await checkIfAdmin(user.uid);
+                if (isAdmin) {
+                    window.location.href = 'admin.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

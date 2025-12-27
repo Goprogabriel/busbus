@@ -8,14 +8,29 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // 🔐 Auth collection - kun for at verificere admin brugere
+    match /auth/{userId} {
+      // Kun autentificerede brugere kan læse deres egen auth dokument
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Ingen må skrive/oprette/slette
+      allow write: if false;
+    }
+
     // ✅ Submissions er åben for create
     match /submissions/{docId} {
 
       // Alle må oprette (uden login)
       allow create: if isValidSubmission();
 
-      // Ingen må læse, opdatere eller slette
-      allow read, update, delete: if false;
+      // Kun admins må læse, opdatere eller slette
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Hjælpefunktion til at tjekke om bruger er admin
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/auth/$(request.auth.uid));
     }
 
     function isValidSubmission() {

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistik - BusBus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #FAFAFA;
+            --color-surface: #FFFFFF;
+            --color-primary: #2C3E50;
+            --color-primary-hover: #1A252F;
+            --color-accent: #3498DB;
+            --color-text: #2C3E50;
+            --color-text-light: #7F8C8D;
+            --color-border: #E0E0E0;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .top-nav {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--spacing-md) var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .nav-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .nav-tab {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: none;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-tab:hover {
+            background: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .nav-tab.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .user-email {
+            font-size: 0.875rem;
+            color: var(--color-text-light);
+        }
+
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: var(--color-bg);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: #E8E8E8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .stat-card {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            margin-top: var(--spacing-sm);
+        }
+
+        .stat-change.positive {
+            color: #27AE60;
+        }
+
+        .stat-change.neutral {
+            color: var(--color-text-light);
+        }
+
+        .chart-section {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-primary);
+        }
+
+        .chart-bar {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .chart-bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.875rem;
+        }
+
+        .chart-bar-track {
+            background: var(--color-bg);
+            height: 24px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .chart-bar-fill {
+            background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 var(--spacing-sm);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: width 0.5s ease;
+        }
+
+        .list-section {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .list-item {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item-label {
+            font-size: 0.875rem;
+        }
+
+        .list-item-value {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--spacing-lg);
+            color: var(--color-text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="nav-title">📊 BusBus Admin</div>
+            <div class="nav-tabs">
+                <a href="admin.html" class="nav-tab">Besvarelser</a>
+                <a href="stats.html" class="nav-tab active">Statistik</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <span class="user-email" id="userEmail"></span>
+            <button class="btn btn-secondary" id="logoutBtn">Log ud</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="loading" id="loading">Henter statistik...</div>
+        
+        <div id="statsContent" style="display: none;">
+            <!-- Overview Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total besvarelser</div>
+                    <div class="stat-value" id="totalSubmissions">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Danske besvarelser</div>
+                    <div class="stat-value" id="danishSubmissions">0</div>
+                    <div class="stat-change neutral" id="danishPercent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Engelske besvarelser</div>
+                    <div class="stat-value" id="englishSubmissions">0</div>
+                    <div class="stat-change neutral" id="englishPercent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Med gruppe</div>
+                    <div class="stat-value" id="groupSubmissions">0</div>
+                    <div class="stat-change neutral" id="groupPercent">0%</div>
+                </div>
+            </div>
+
+            <!-- Countries Chart -->
+            <div class="chart-section">
+                <div class="chart-title">Lande fordeling</div>
+                <div id="countriesChart"></div>
+            </div>
+
+            <!-- Cities Chart -->
+            <div class="chart-section">
+                <div class="chart-title">Top 10 byer</div>
+                <div id="citiesChart"></div>
+            </div>
+
+            <!-- Age Distribution -->
+            <div class="chart-section">
+                <div class="chart-title">Aldersfordeling</div>
+                <div id="ageChart"></div>
+            </div>
+
+            <!-- Recent Submissions -->
+            <div class="list-section">
+                <div class="chart-title">Seneste tilmeldinger</div>
+                <div id="recentSubmissions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPZD1qOVmUAqiRKMA2EIy75vIapkjZpTA",
+            authDomain: "busbus-a4556.firebaseapp.com",
+            projectId: "busbus-a4556",
+            storageBucket: "busbus-a4556.firebasestorage.app",
+            messagingSenderId: "986020652124",
+            appId: "1:986020652124:web:1beeceac928db31c823299",
+            measurementId: "G-20L316JRVP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Check authentication
+        async function checkAuth() {
+            return new Promise((resolve) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    try {
+                        const authDoc = await getDoc(doc(db, 'auth', user.uid));
+                        if (!authDoc.exists() || authDoc.data().user !== user.uid) {
+                            await signOut(auth);
+                            window.location.href = 'login.html';
+                            return;
+                        }
+
+                        document.getElementById('userEmail').textContent = user.email;
+                        resolve(user);
+                    } catch (error) {
+                        console.error('Error checking auth:', error);
+                        window.location.href = 'login.html';
+                    }
+                });
+            });
+        }
+
+        // Get field from answers
+        function getField(submission, field) {
+            if (!submission.answers) return '';
+            
+            const fieldMappings = {
+                firstName: ['Hvad er dit fornavn?', 'What is your first name?', 'Hvad er dit fornavn og mellemnavn?', 'What is your first and middle name?'],
+                lastName: ['Hvad er dit efternavn?', 'What is your last name?'],
+                birthdate: ['Hvad er din fødselsdato?', 'What is your date of birth?'],
+                city: ['Hvad er din by?', 'What is your city?'],
+                country: ['Hvilket land bor du i?', 'Which country do you live in?'],
+                group: ['Er du i en gruppe med nogen?', 'Are you in a group with anyone?'],
+            };
+
+            const keys = fieldMappings[field] || [];
+            for (const key of keys) {
+                if (submission.answers[key]) {
+                    return submission.answers[key];
+                }
+            }
+            return '';
+        }
+
+        // Calculate age
+        function calculateAge(birthdate) {
+            if (!birthdate) return null;
+            const today = new Date();
+            const birth = new Date(birthdate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        // Load and display statistics
+        async function loadStatistics() {
+            try {
+                const q = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                const submissions = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Calculate stats
+                const total = submissions.length;
+                const danish = submissions.filter(s => s.language === 'da').length;
+                const english = submissions.filter(s => s.language === 'en').length;
+                const withGroup = submissions.filter(s => getField(s, 'group')).length;
+
+                // Update overview cards
+                document.getElementById('totalSubmissions').textContent = total;
+                document.getElementById('danishSubmissions').textContent = danish;
+                document.getElementById('englishSubmissions').textContent = english;
+                document.getElementById('groupSubmissions').textContent = withGroup;
+
+                document.getElementById('danishPercent').textContent = total > 0 ? Math.round((danish / total) * 100) + '%' : '0%';
+                document.getElementById('englishPercent').textContent = total > 0 ? Math.round((english / total) * 100) + '%' : '0%';
+                document.getElementById('groupPercent').textContent = total > 0 ? Math.round((withGroup / total) * 100) + '%' : '0%';
+
+                // Countries distribution
+                const countries = {};
+                submissions.forEach(s => {
+                    const country = getField(s, 'country') || 'Ukendt';
+                    countries[country] = (countries[country] || 0) + 1;
+                });
+
+                const countriesSorted = Object.entries(countries)
+                    .sort((a, b) => b[1] - a[1]);
+
+                const countriesChart = document.getElementById('countriesChart');
+                countriesChart.innerHTML = countriesSorted.map(([country, count]) => {
+                    const percent = total > 0 ? (count / total) * 100 : 0;
+                    return `
+                        <div class="chart-bar">
+                            <div class="chart-bar-label">
+                                <span>${country}</span>
+                                <span>${count}</span>
+                            </div>
+                            <div class="chart-bar-track">
+                                <div class="chart-bar-fill" style="width: ${percent}%">
+                                    ${Math.round(percent)}%
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Cities distribution
+                const cities = {};
+                submissions.forEach(s => {
+                    const city = getField(s, 'city') || 'Ukendt';
+                    cities[city] = (cities[city] || 0) + 1;
+                });
+
+                const citiesSorted = Object.entries(cities)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10);
+
+                const citiesChart = document.getElementById('citiesChart');
+                citiesChart.innerHTML = citiesSorted.map(([city, count]) => {
+                    const percent = total > 0 ? (count / total) * 100 : 0;
+                    return `
+                        <div class="chart-bar">
+                            <div class="chart-bar-label">
+                                <span>${city}</span>
+                                <span>${count}</span>
+                            </div>
+                            <div class="chart-bar-track">
+                                <div class="chart-bar-fill" style="width: ${percent}%">
+                                    ${Math.round(percent)}%
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Age distribution
+                const ageGroups = {
+                    '0-17': 0,
+                    '18-25': 0,
+                    '26-35': 0,
+                    '36-50': 0,
+                    '51+': 0,
+                    'Ukendt': 0
+                };
+
+                submissions.forEach(s => {
+                    const birthdate = getField(s, 'birthdate');
+                    const age = calculateAge(birthdate);
+                    
+                    if (age === null) {
+                        ageGroups['Ukendt']++;
+                    } else if (age < 18) {
+                        ageGroups['0-17']++;
+                    } else if (age <= 25) {
+                        ageGroups['18-25']++;
+                    } else if (age <= 35) {
+                        ageGroups['26-35']++;
+                    } else if (age <= 50) {
+                        ageGroups['36-50']++;
+                    } else {
+                        ageGroups['51+']++;
+                    }
+                });
+
+                const ageChart = document.getElementById('ageChart');
+                ageChart.innerHTML = Object.entries(ageGroups).map(([group, count]) => {
+                    const percent = total > 0 ? (count / total) * 100 : 0;
+                    return `
+                        <div class="chart-bar">
+                            <div class="chart-bar-label">
+                                <span>${group} år</span>
+                                <span>${count}</span>
+                            </div>
+                            <div class="chart-bar-track">
+                                <div class="chart-bar-fill" style="width: ${percent}%">
+                                    ${Math.round(percent)}%
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Recent submissions
+                const recentSubmissions = document.getElementById('recentSubmissions');
+                recentSubmissions.innerHTML = submissions.slice(0, 10).map(s => {
+                    const firstName = getField(s, 'firstName');
+                    const lastName = getField(s, 'lastName');
+                    const date = s.createdAt?.toDate();
+                    const dateStr = date ? date.toLocaleDateString('da-DK') : 'N/A';
+                    
+                    return `
+                        <div class="list-item">
+                            <div class="list-item-label">${firstName} ${lastName}</div>
+                            <div class="list-item-value">${dateStr}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('statsContent').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                document.getElementById('loading').textContent = 'Fejl ved indlæsning af statistik';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+
+        // Initialize
+        checkAuth().then(() => {
+            loadStatistics();
+        });
+    </script>
+</body>
+</html>
