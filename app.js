@@ -82,11 +82,10 @@ const i18n = {
         registered: {
             title: "Velkommen som frivillig hos BUSBUS",
             body: `
-                <p>Du er nu oprettet som frivillig, og du er sikret et armbånd til Roskilde Festival 2025.</p>
-                <p>Har du før været frivillig i en anden bod, kan der gå op til en uge før, at du er overflyttet til BUSBUS i People-VOL.</p>
-                <p>Senest d. 16/6-25 modtager du vagtplan, arbejdsbeskrivelser samt øvrig info vedrørende afhentning af armbånd mm.</p>
+                <p>Du er nu oprettet som frivillig, og du er sikret et armbånd til Roskilde Festival 2026.</p>
+                <p>Senest d. 16/6-25 modtager du vagtplan og øvrig info vedrørende afhentning af armbånd mm.</p>
                 <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
-                <p>Vi opfordrer dig til at søge information på Roskilde Festivals hjemmeside, men finder du ikke svar her, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>På Roskilde Festivals hjemmeside kan du finde svar på de fleste ting ang. festivalen, men finder du ikke svar, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
                 <p>Har du venner eller veninder, der også vil være frivillige, er de velkomne, og vi kan garantere, at I får jeres vagter sammen - de skal blot huske at skrive samme gruppenavn som dig, når de tilmelder sig.</p>
                 <p>Vi glæder os til en god festival.</p>
                 <p>De bedste hilsner<br>Jonas og Susanne / BUSBUS</p>
@@ -256,12 +255,11 @@ const i18n = {
         registered: {
             title: "Welcome as a volunteer at BUSBUS",
             body: `
-                <p>You are now registered as a volunteer and have secured a wristband for Roskilde Festival 2025.</p>
-                <p>If you have previously volunteered in another stall, it can take up to a week before you are transferred to BUSBUS in People-VOL.</p>
-                <p>By 16/6-25 at the latest you will receive your shift schedule, job descriptions and other information about collecting your wristband etc.</p>
-                <p>On Roskilde Festival's website you can find answers to all your questions about volunteering: Roskilde Festival - FAQ</p>
-                <p>We encourage you to check Roskilde Festival's website first, but if you can't find an answer there you can always contact us at: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
-                <p>If you have friends who also want to volunteer, they are welcome, and we can guarantee you'll get shifts together — they just need to use the same group name when registering.</p>
+                <p>You are now registered as a volunteer and have secured a wristband for Roskilde Festival 2026.</p>
+                <p>By 16/6 you will receive the shift schedule and other information about wristband collection and practicalities.</p>
+                <p>On Roskilde Festival's website you can find answers to all your questions about volunteering: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
+                <p>If you can't find an answer there, you can always contact us at: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>If you have friends who also want to volunteer, they are welcome, and we can ensure you'll get shifts together — they just need to use the same group name when registering.</p>
                 <p>We look forward to a great festival.</p>
                 <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
             `
