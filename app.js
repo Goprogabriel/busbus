@@ -1,36 +1,5 @@
 // ========================================
 // FIREBASE CONFIGURATION & INITIALIZATION
-// ========================================
-
-// Import Firebase SDK v9 modular functions
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
-
-// Firebase configuration object
-// Replace these values with your actual Firebase project credentials
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-
-// Initialize Firebase
-let app, db;
-try {
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    console.log('Firebase initialized successfully');
-} catch (error) {
-    console.error('Firebase initialization error:', error);
-}
-
-// ========================================
-// INTERNATIONALIZATION (i18n) DICTIONARY
-// ========================================
-
 const i18n = {
     da: {
         landing: {
@@ -43,15 +12,12 @@ const i18n = {
             back: "Tilbage",
             next: "Næste",
             submit: "Indsend",
+            submitting: "Indsender...",
             yes: "Ja",
             no: "Nej",
             step1: {
                 title: "Personlige Oplysninger",
-                description: "Lad os starte med det grundlæggende.",
-                name: "Navn",
-                namePlaceholder: "Indtast dit navn",
-                email: "Email",
-                emailPlaceholder: "Indtast din email"
+                description: "Grundlæggende information"
             },
             step2: {
                 title: "Adresse",
@@ -71,7 +37,7 @@ const i18n = {
             },
             step6: {
                 title: "Gennemse & Indsend",
-                description: "Venligst gennemse dine oplysninger før indsendelse."
+                description: "Tjek dine oplysninger før du sender"
             },
             errors: {
                 required: "Dette felt er påkrævet",
@@ -81,7 +47,8 @@ const i18n = {
         confirmation: {
             title: "Tak!",
             message: "Din indsendelse er modtaget. Vi vender tilbage snart.",
-            reset: "Start Forfra"
+            reset: "Start Forfra",
+            newSubmission: "Ny tilmelding"
         },
         toast: {
             success: "Indsendelse gennemført!",
@@ -89,23 +56,81 @@ const i18n = {
         },
         fields: {
             volNo: "People-VOL-nr.",
+            volNoPlaceholder: "f.eks. 123456",
             firstNames: "Fornavn og mellemnavn",
+            firstNamesPlaceholder: "f.eks. Anna Marie",
             lastName: "Efternavn",
+            lastNamePlaceholder: "f.eks. Jensen",
             birthdate: "Fødselsdag",
+            birthdateHint: "Vi tjekker om du er under 18 d. 27. juni 2026",
             address: "Adresse",
+            addressPlaceholder: "f.eks. Hovedgaden 12",
             postcode: "Postnummer",
+            postcodePlaceholder: "2100",
             city: "By",
+            cityPlaceholder: "f.eks. København",
             country: "Land",
             phone: "Tlf. nr.",
+            phonePlaceholder: "12345678",
             phoneCountry: "Landekode",
+            email: "E-mail",
+            emailPlaceholder: "f.eks. navn@email.dk",
             previousVolunteerQuestion: "Tidligere frivillig hos BUSBUS?",
-            experienceLabel: "Har du relevant erhvervserfaring, kan du evt. skrive det her.",
+            experienceLabel: "Har du relevant erhvervserfaring? Skriv her (valgfrit)",
+            experiencePlaceholder: "Beskriv din erfaring...",
             inGroupQuestion: "Er du i gruppe med andre?",
             groupName: "Gruppenavn",
+            groupNamePlaceholder: "f.eks. Team København",
             remarks: "Evt. bemærkninger",
+            remarksPlaceholder: "Eventuelle kommentarer...",
+            parentSectionTitle: "Kontaktoplysninger på forælder eller værge",
+            parentSectionDescription: "Du er under 18 år d. 27. juni 2026, så vi har brug for kontaktoplysninger på din forælder/værge.",
             parentName: "Navn på forælder/værge",
+            parentNamePlaceholder: "Forældres fulde navn",
             parentPhone: "Telefonnummer på forælder/værge",
-            under18Notice: "Hvis under 18 år, angiv forælder eller værge"
+            parentPhonePlaceholder: "12345678"
+        },
+        review: {
+            personal: "Personlige Oplysninger",
+            address: "Adresse",
+            contact: "Kontakt",
+            experience: "Erfaring",
+            group: "Gruppe & Bemærkninger",
+            parent: "Forældre / Værge",
+            labels: {
+                volNo: "People-VOL-nr.",
+                firstNames: "Fornavn",
+                lastName: "Efternavn",
+                birthdate: "Fødselsdag",
+                address: "Adresse",
+                postcode: "Postnummer",
+                city: "By",
+                country: "Land",
+                phone: "Telefon",
+                email: "E-mail",
+                previousVolunteer: "Tidligere frivillig",
+                experience: "Erhvervserfaring",
+                inGroup: "I gruppe?",
+                groupName: "Gruppenavn",
+                remarks: "Bemærkninger",
+                parentName: "Navn",
+                parentPhone: "Telefon"
+            }
+        },
+        options: {
+            countryPlaceholder: "Vælg land",
+            countryDK: "Danmark (DK)",
+            countryNO: "Norge (NO)",
+            countrySE: "Sverige (SE)",
+            countryDE: "Tyskland (DE)",
+            countryUK: "Storbritannien (UK)",
+            countryOther: "Andet",
+            phoneDK: "DK +45",
+            phoneNO: "NO +47",
+            phoneSE: "SE +46",
+            phoneDE: "DE +49",
+            phoneUK: "UK +44",
+            phoneOther: "Andet"
         }
     },
     en: {
@@ -119,15 +144,12 @@ const i18n = {
             back: "Back",
             next: "Next",
             submit: "Submit",
+            submitting: "Submitting...",
             yes: "Yes",
             no: "No",
             step1: {
                 title: "Personal Information",
-                description: "Let's start with the basics.",
-                name: "Name",
-                namePlaceholder: "Enter your name",
-                email: "Email",
-                emailPlaceholder: "Enter your email"
+                description: "Let's start with the basics."
             },
             step2: {
                 title: "Address",
@@ -147,7 +169,7 @@ const i18n = {
             },
             step6: {
                 title: "Review & Submit",
-                description: "Please review your information before submitting."
+                description: "Review your details before submitting."
             },
             errors: {
                 required: "This field is required",
@@ -157,7 +179,8 @@ const i18n = {
         confirmation: {
             title: "Thank You!",
             message: "Your submission has been received. We'll be in touch soon.",
-            reset: "Start Over"
+            reset: "Start Over",
+            newSubmission: "Submit Another"
         },
         toast: {
             success: "Submission successful!",
@@ -165,23 +188,81 @@ const i18n = {
         },
         fields: {
             volNo: "People-VOL-no.",
+            volNoPlaceholder: "e.g. 123456",
             firstNames: "First and middle name",
+            firstNamesPlaceholder: "e.g. Anna Marie",
             lastName: "Last name",
+            lastNamePlaceholder: "e.g. Johnson",
             birthdate: "Birthdate",
+            birthdateHint: "We check if you are under 18 on 27 June 2026",
             address: "Address",
+            addressPlaceholder: "e.g. Main Street 12",
             postcode: "Postal code",
+            postcodePlaceholder: "2100",
             city: "City",
+            cityPlaceholder: "e.g. Copenhagen",
             country: "Country",
             phone: "Phone",
+            phonePlaceholder: "12345678",
             phoneCountry: "Country code",
+            email: "Email",
+            emailPlaceholder: "e.g. name@email.com",
             previousVolunteerQuestion: "Previously volunteered at BUSBUS?",
-            experienceLabel: "Do you have relevant work experience? You can write it here.",
+            experienceLabel: "Do you have relevant work experience? Write it here (optional)",
+            experiencePlaceholder: "Describe your experience...",
             inGroupQuestion: "Are you in a group with others?",
             groupName: "Group name",
+            groupNamePlaceholder: "e.g. Team Copenhagen",
             remarks: "Any comments",
+            remarksPlaceholder: "Any additional comments...",
+            parentSectionTitle: "Parent or guardian contact details",
+            parentSectionDescription: "You are under 18 on 27 June 2026, so we need contact details for your parent/guardian.",
             parentName: "Parent/guardian name",
+            parentNamePlaceholder: "Full name of parent",
             parentPhone: "Parent/guardian phone",
-            under18Notice: "If under 18, provide parent or guardian contact"
+            parentPhonePlaceholder: "12345678"
+        },
+        review: {
+            personal: "Personal Information",
+            address: "Address",
+            contact: "Contact",
+            experience: "Experience",
+            group: "Group & Remarks",
+            parent: "Parent / Guardian",
+            labels: {
+                volNo: "People-VOL-no.",
+                firstNames: "First names",
+                lastName: "Last name",
+                birthdate: "Birthdate",
+                address: "Address",
+                postcode: "Postal code",
+                city: "City",
+                country: "Country",
+                phone: "Phone",
+                email: "Email",
+                previousVolunteer: "Previous volunteer",
+                experience: "Work experience",
+                inGroup: "In group?",
+                groupName: "Group name",
+                remarks: "Remarks",
+                parentName: "Name",
+                parentPhone: "Phone"
+            }
+        },
+        options: {
+            countryPlaceholder: "Select country",
+            countryDK: "Denmark (DK)",
+            countryNO: "Norway (NO)",
+            countrySE: "Sweden (SE)",
+            countryDE: "Germany (DE)",
+            countryUK: "United Kingdom (UK)",
+            countryOther: "Other",
+            phoneDK: "DK +45",
+            phoneNO: "NO +47",
+            phoneSE: "SE +46",
+            phoneDE: "DE +49",
+            phoneUK: "UK +44",
+            phoneOther: "Other"
         }
     }
 };
@@ -323,6 +404,11 @@ function setLanguage(lang) {
     
     // Update document language attribute
     document.documentElement.lang = lang;
+
+    // If on review step, refresh summary to reflect new language
+    if (document.getElementById('wizard-form') && state.currentStep === 6) {
+        populateReview();
+    }
 }
 
 // ========================================
@@ -415,42 +501,36 @@ function validateStep() {
     });
     
     // Additional conditional checks
-    try {
-        // If group field is shown and inGroup is yes, require groupName
-            if (state.currentStep === 5) {
-                const inGroup = document.querySelector('input[name="inGroup"]:checked')?.value;
-                if (inGroup === 'yes') {
-                    const groupName = document.getElementById('groupName');
-                    if (groupName && !groupName.value.trim()) {
-                        isValid = false;
-                        groupName.closest('.form-group').classList.add('has-error');
-                        groupName.classList.add('error');
-                    }
-                }
+    if (state.currentStep === 5) {
+        const inGroup = document.querySelector('input[name="inGroup"]:checked')?.value;
+        if (inGroup === 'yes') {
+            const groupName = document.getElementById('groupName');
+            if (groupName && !groupName.value.trim()) {
+                isValid = false;
+                groupName.closest('.form-group').classList.add('has-error');
+                groupName.classList.add('error');
             }
+        }
+    }
 
-            // If applicant is under 18 on June 27 2026, require parent contact fields on step 6
-            if (state.currentStep === 6) {
-                const parentName = document.getElementById('parentName');
-                const parentPhone = document.getElementById('parentPhone');
-                // Only validate if parent fields are visible/required
-                if (parentName && parentName.required && parentPhone && parentPhone.required) {
-                    if (!parentName.value.trim() || !parentPhone.value.trim()) {
-                        isValid = false;
-                        if (!parentName.value.trim()) {
-                            parentName.closest('.form-group').classList.add('has-error');
-                            parentName.classList.add('error');
-                        }
-                        if (!parentPhone.value.trim()) {
-                            parentPhone.closest('.form-group').classList.add('has-error');
-                            parentPhone.classList.add('error');
-                        }
-                    }
+    if (state.currentStep === 6) {
+        const parentName = document.getElementById('parentName');
+        const parentPhone = document.getElementById('parentPhone');
+        if (parentName && parentName.required && parentPhone && parentPhone.required) {
+            const parentNameValue = parentName.value.trim();
+            const parentPhoneValue = parentPhone.value.trim();
+            if (!parentNameValue || !parentPhoneValue) {
+                isValid = false;
+                if (!parentNameValue) {
+                    parentName.closest('.form-group').classList.add('has-error');
+                    parentName.classList.add('error');
+                }
+                if (!parentPhoneValue) {
+                    parentPhone.closest('.form-group').classList.add('has-error');
+                    parentPhone.classList.add('error');
                 }
             }
         }
-    } catch (e) {
-        // ignore and allow normal validation to surface other errors
     }
 
     return isValid;
@@ -473,6 +553,7 @@ function collectFormData() {
         country: document.getElementById('country')?.value || null,
         phoneCountry: document.getElementById('phoneCountry')?.value || null,
         phone: document.getElementById('phone')?.value.trim() || null,
+        email: document.getElementById('email')?.value.trim() || null,
         previousVolunteer: document.querySelector('input[name="previousVolunteer"]:checked')?.value || null,
         experience: document.getElementById('experience')?.value.trim() || null,
         inGroup: document.querySelector('input[name="inGroup"]:checked')?.value || null,
@@ -490,6 +571,20 @@ function collectFormData() {
  */
 function populateReview() {
     const data = collectFormData();
+    const countryKeyMap = {
+        dk: 'options.countryDK',
+        no: 'options.countryNO',
+        se: 'options.countrySE',
+        de: 'options.countryDE',
+        en: 'options.countryUK',
+        other: 'options.countryOther'
+    };
+
+    const booleanLabel = (value) => {
+        if (value === 'yes') return t('form.yes');
+        if (value === 'no') return t('form.no');
+        return '-';
+    };
 
     document.getElementById('review-volNo').textContent = data.volNo || '-';
     document.getElementById('review-firstNames').textContent = data.firstNames || '-';
@@ -498,12 +593,14 @@ function populateReview() {
     document.getElementById('review-address').textContent = data.address || '-';
     document.getElementById('review-postcode').textContent = data.postcode || '-';
     document.getElementById('review-city').textContent = data.city || '-';
-    document.getElementById('review-country').textContent = data.country || '-';
+    const countryLabelKey = data.country ? countryKeyMap[data.country] : null;
+    document.getElementById('review-country').textContent = countryLabelKey ? t(countryLabelKey) : '-';
     document.getElementById('review-phone').textContent = `${data.phoneCountry || ''} ${data.phone || ''}`.trim() || '-';
+    document.getElementById('review-email').textContent = data.email || '-';
 
-    document.getElementById('review-previousVolunteer').textContent = data.previousVolunteer || '-';
+    document.getElementById('review-previousVolunteer').textContent = booleanLabel(data.previousVolunteer);
     document.getElementById('review-experience').textContent = data.experience || '-';
-    document.getElementById('review-inGroup').textContent = data.inGroup || '-';
+    document.getElementById('review-inGroup').textContent = booleanLabel(data.inGroup);
     document.getElementById('review-groupName').textContent = data.groupName || '-';
     document.getElementById('review-remarks').textContent = data.remarks || '-';
 
@@ -524,7 +621,7 @@ function populateReview() {
 async function submitForm() {
     const btnSubmit = document.getElementById('btn-submit');
     btnSubmit.disabled = true;
-    btnSubmit.textContent = state.currentLanguage === 'da' ? 'Indsender...' : 'Submitting...';
+    btnSubmit.textContent = t('form.submitting');
     
     try {
         const formData = collectFormData();

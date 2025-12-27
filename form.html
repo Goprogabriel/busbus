@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,23 +35,23 @@
                     <!-- Step 1: Basic Info -->
                     <div class="form-step active" data-step="1">
                         <h2 data-i18n="form.step1.title">Personlige Oplysninger</h2>
-                        <p class="step-description">Grundlæggende information</p>
+                        <p class="step-description" data-i18n="form.step1.description">Grundlæggende information</p>
                         <div class="form-group">
                             <label for="volNo" data-i18n="fields.volNo">People-VOL-nr.</label>
-                            <input type="number" id="volNo" name="volNo" inputmode="numeric" placeholder="123456">
+                            <input type="number" id="volNo" name="volNo" inputmode="numeric" data-i18n-placeholder="fields.volNoPlaceholder" placeholder="123456">
                         </div>
                         <div class="form-group">
                             <label for="firstNames" data-i18n="fields.firstNames">Fornavn og mellemnavn <span class="required">*</span></label>
-                            <input type="text" id="firstNames" name="firstNames" required placeholder="f.eks. Anna Marie">
+                            <input type="text" id="firstNames" name="firstNames" required data-i18n-placeholder="fields.firstNamesPlaceholder" placeholder="f.eks. Anna Marie">
                         </div>
                         <div class="form-group">
                             <label for="lastName" data-i18n="fields.lastName">Efternavn <span class="required">*</span></label>
-                            <input type="text" id="lastName" name="lastName" required placeholder="f.eks. Jensen">
+                            <input type="text" id="lastName" name="lastName" required data-i18n-placeholder="fields.lastNamePlaceholder" placeholder="f.eks. Jensen">
                         </div>
                         <div class="form-group">
                             <label for="birthdate" data-i18n="fields.birthdate">Fødselsdag <span class="required">*</span></label>
                             <input type="date" id="birthdate" name="birthdate" required>
-                            <small class="field-hint">Vi tjekker om du er under 18 d. 27. juni 2026</small>
+                            <small class="field-hint" data-i18n="fields.birthdateHint">Vi tjekker om du er under 18 d. 27. juni 2026</small>
                         </div>
                     </div>
 
@@ -61,26 +61,26 @@
                         <p class="step-description" data-i18n="form.step2.description">Hvor bor du?</p>
                         <div class="form-group">
                             <label for="address" data-i18n="fields.address">Adresse <span class="required">*</span></label>
-                            <input type="text" id="address" name="address" required placeholder="f.eks. Hovedgaden 12">
+                            <input type="text" id="address" name="address" required data-i18n-placeholder="fields.addressPlaceholder" placeholder="f.eks. Hovedgaden 12">
                         </div>
                         <div class="form-group">
                             <label for="postcode" data-i18n="fields.postcode">Postnummer <span class="required">*</span></label>
-                            <input type="number" id="postcode" name="postcode" required inputmode="numeric" placeholder="2100">
+                            <input type="number" id="postcode" name="postcode" required inputmode="numeric" data-i18n-placeholder="fields.postcodePlaceholder" placeholder="2100">
                         </div>
                         <div class="form-group">
                             <label for="city" data-i18n="fields.city">By <span class="required">*</span></label>
-                            <input type="text" id="city" name="city" required placeholder="f.eks. København">
+                            <input type="text" id="city" name="city" required data-i18n-placeholder="fields.cityPlaceholder" placeholder="f.eks. København">
                         </div>
                         <div class="form-group">
                             <label for="country" data-i18n="fields.country">Land <span class="required">*</span></label>
                             <select id="country" name="country" required>
-                                <option value="">Vælg land</option>
-                                <option value="dk">Denmark (DK)</option>
-                                <option value="no">Norway (NO)</option>
-                                <option value="se">Sweden (SE)</option>
-                                <option value="de">Germany (DE)</option>
-                                <option value="en">United Kingdom (EN)</option>
-                                <option value="other">Other</option>
+                                <option value="" data-i18n="options.countryPlaceholder">Vælg land</option>
+                                <option value="dk" data-i18n="options.countryDK">Danmark (DK)</option>
+                                <option value="no" data-i18n="options.countryNO">Norge (NO)</option>
+                                <option value="se" data-i18n="options.countrySE">Sverige (SE)</option>
+                                <option value="de" data-i18n="options.countryDE">Tyskland (DE)</option>
+                                <option value="en" data-i18n="options.countryUK">Storbritannien (UK)</option>
+                                <option value="other" data-i18n="options.countryOther">Andet</option>
                             </select>
                         </div>
                     </div>
@@ -93,15 +93,19 @@
                             <label for="phone" data-i18n="fields.phone">Tlf. nr. <span class="required">*</span></label>
                             <div style="display:flex;gap:8px;align-items:center;">
                                 <select id="phoneCountry" name="phoneCountry" style="width:140px;" required>
-                                    <option value="+45">DK +45</option>
-                                    <option value="+47">NO +47</option>
-                                    <option value="+46">SE +46</option>
-                                    <option value="+49">DE +49</option>
-                                    <option value="+44">UK +44</option>
-                                    <option value="">Other</option>
+                                    <option value="+45" data-i18n="options.phoneDK">DK +45</option>
+                                    <option value="+47" data-i18n="options.phoneNO">NO +47</option>
+                                    <option value="+46" data-i18n="options.phoneSE">SE +46</option>
+                                    <option value="+49" data-i18n="options.phoneDE">DE +49</option>
+                                    <option value="+44" data-i18n="options.phoneUK">UK +44</option>
+                                    <option value="" data-i18n="options.phoneOther">Andet</option>
                                 </select>
-                                <input type="tel" id="phone" name="phone" required placeholder="12345678" style="flex:1;">
+                                <input type="tel" id="phone" name="phone" required style="flex:1;" data-i18n-placeholder="fields.phonePlaceholder" placeholder="12345678">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-i18n="fields.email">E-mail <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required data-i18n-placeholder="fields.emailPlaceholder" placeholder="f.eks. navn@email.dk">
                         </div>
                     </div>
 
@@ -118,7 +122,7 @@
                         </div>
                         <div class="form-group">
                             <label for="experience" data-i18n="fields.experienceLabel">Har du relevant erhvervserfaring? Skriv her (valgfrit)</label>
-                            <textarea id="experience" name="experience" rows="4" placeholder="Beskriv din erfaring..."></textarea>
+                            <textarea id="experience" name="experience" rows="4" data-i18n-placeholder="fields.experiencePlaceholder" placeholder="Beskriv din erfaring..."></textarea>
                         </div>
                     </div>
 
@@ -135,11 +139,11 @@
                         </div>
                         <div class="form-group" id="groupNameWrap" style="display:none;">
                             <label for="groupName" data-i18n="fields.groupName">Gruppenavn</label>
-                            <input type="text" id="groupName" name="groupName" placeholder="f.eks. Team København">
+                            <input type="text" id="groupName" name="groupName" data-i18n-placeholder="fields.groupNamePlaceholder" placeholder="f.eks. Team København">
                         </div>
                         <div class="form-group">
                             <label for="remarks" data-i18n="fields.remarks">Evt. bemærkninger</label>
-                            <textarea id="remarks" name="remarks" rows="4" placeholder="Eventuelle kommentarer..."></textarea>
+                            <textarea id="remarks" name="remarks" rows="4" data-i18n-placeholder="fields.remarksPlaceholder" placeholder="Eventuelle kommentarer..."></textarea>
                         </div>
                     </div>
 
@@ -150,62 +154,63 @@
 
                         <!-- Parent contact section (shown only if under 18 on June 27, 2026) -->
                         <div id="parentContact" style="display:none;background:var(--color-bg);padding:var(--spacing-lg);border-radius:var(--radius-md);margin-bottom:var(--spacing-lg);border:2px solid var(--color-accent);">
-                            <h3 data-i18n="fields.under18Notice" style="margin-bottom:var(--spacing-md);color:var(--color-accent);">Kontaktoplysninger på forælder eller værge</h3>
-                            <p style="font-size:var(--font-size-sm);color:var(--color-text-light);margin-bottom:var(--spacing-md);">Du er under 18 år d. 27. juni 2026, så vi har brug for kontaktoplysninger på din forælder/værge.</p>
+                            <h3 data-i18n="fields.parentSectionTitle" style="margin-bottom:var(--spacing-md);color:var(--color-accent);">Kontaktoplysninger på forælder eller værge</h3>
+                            <p data-i18n="fields.parentSectionDescription" style="font-size:var(--font-size-sm);color:var(--color-text-light);margin-bottom:var(--spacing-md);">Du er under 18 år d. 27. juni 2026, så vi har brug for kontaktoplysninger på din forælder/værge.</p>
                             <div class="form-group">
                                 <label for="parentName" data-i18n="fields.parentName">Navn på forælder/værge <span class="required">*</span></label>
-                                <input type="text" id="parentName" name="parentName" placeholder="Forældres fulde navn">
+                                <input type="text" id="parentName" name="parentName" data-i18n-placeholder="fields.parentNamePlaceholder" placeholder="Forældres fulde navn">
                             </div>
                             <div class="form-group">
                                 <label for="parentPhone" data-i18n="fields.parentPhone">Telefonnummer på forælder/værge <span class="required">*</span></label>
-                                <input type="tel" id="parentPhone" name="parentPhone" placeholder="12345678">
+                                <input type="tel" id="parentPhone" name="parentPhone" data-i18n-placeholder="fields.parentPhonePlaceholder" placeholder="12345678">
                             </div>
                         </div>
 
                         <div class="review-section">
-                            <h3>Personlige Oplysninger</h3>
+                            <h3 data-i18n="review.personal">Personlige Oplysninger</h3>
                             <dl class="review-list">
-                                <dt>People-VOL-nr.</dt><dd id="review-volNo">-</dd>
-                                <dt>Fornavn</dt><dd id="review-firstNames">-</dd>
-                                <dt>Efternavn</dt><dd id="review-lastName">-</dd>
-                                <dt>Fødselsdag</dt><dd id="review-birthdate">-</dd>
+                                <dt data-i18n="review.labels.volNo">People-VOL-nr.</dt><dd id="review-volNo">-</dd>
+                                <dt data-i18n="review.labels.firstNames">Fornavn</dt><dd id="review-firstNames">-</dd>
+                                <dt data-i18n="review.labels.lastName">Efternavn</dt><dd id="review-lastName">-</dd>
+                                <dt data-i18n="review.labels.birthdate">Fødselsdag</dt><dd id="review-birthdate">-</dd>
                             </dl>
                         </div>
                         <div class="review-section">
-                            <h3>Adresse</h3>
+                            <h3 data-i18n="review.address">Adresse</h3>
                             <dl class="review-list">
-                                <dt>Adresse</dt><dd id="review-address">-</dd>
-                                <dt>Postnummer</dt><dd id="review-postcode">-</dd>
-                                <dt>By</dt><dd id="review-city">-</dd>
-                                <dt>Land</dt><dd id="review-country">-</dd>
+                                <dt data-i18n="review.labels.address">Adresse</dt><dd id="review-address">-</dd>
+                                <dt data-i18n="review.labels.postcode">Postnummer</dt><dd id="review-postcode">-</dd>
+                                <dt data-i18n="review.labels.city">By</dt><dd id="review-city">-</dd>
+                                <dt data-i18n="review.labels.country">Land</dt><dd id="review-country">-</dd>
                             </dl>
                         </div>
                         <div class="review-section">
-                            <h3>Kontakt</h3>
+                            <h3 data-i18n="review.contact">Kontakt</h3>
                             <dl class="review-list">
-                                <dt>Telefon</dt><dd id="review-phone">-</dd>
+                                <dt data-i18n="review.labels.phone">Telefon</dt><dd id="review-phone">-</dd>
+                                <dt data-i18n="review.labels.email">E-mail</dt><dd id="review-email">-</dd>
                             </dl>
                         </div>
                         <div class="review-section">
-                            <h3>Erfaring</h3>
+                            <h3 data-i18n="review.experience">Erfaring</h3>
                             <dl class="review-list">
-                                <dt>Tidligere frivillig</dt><dd id="review-previousVolunteer">-</dd>
-                                <dt>Erhvervserfaring</dt><dd id="review-experience">-</dd>
+                                <dt data-i18n="review.labels.previousVolunteer">Tidligere frivillig</dt><dd id="review-previousVolunteer">-</dd>
+                                <dt data-i18n="review.labels.experience">Erhvervserfaring</dt><dd id="review-experience">-</dd>
                             </dl>
                         </div>
                         <div class="review-section">
-                            <h3>Gruppe & Bemærkninger</h3>
+                            <h3 data-i18n="review.group">Gruppe & Bemærkninger</h3>
                             <dl class="review-list">
-                                <dt>I gruppe?</dt><dd id="review-inGroup">-</dd>
-                                <dt>Gruppenavn</dt><dd id="review-groupName">-</dd>
-                                <dt>Bemærkninger</dt><dd id="review-remarks">-</dd>
+                                <dt data-i18n="review.labels.inGroup">I gruppe?</dt><dd id="review-inGroup">-</dd>
+                                <dt data-i18n="review.labels.groupName">Gruppenavn</dt><dd id="review-groupName">-</dd>
+                                <dt data-i18n="review.labels.remarks">Bemærkninger</dt><dd id="review-remarks">-</dd>
                             </dl>
                         </div>
                         <div class="review-section" id="review-parent" style="display:none;">
-                            <h3>Forældre / Værge</h3>
+                            <h3 data-i18n="review.parent">Forældre / Værge</h3>
                             <dl class="review-list">
-                                <dt>Navn</dt><dd id="review-parentName">-</dd>
-                                <dt>Telefon</dt><dd id="review-parentPhone">-</dd>
+                                <dt data-i18n="review.labels.parentName">Navn</dt><dd id="review-parentName">-</dd>
+                                <dt data-i18n="review.labels.parentPhone">Telefon</dt><dd id="review-parentPhone">-</dd>
                             </dl>
                         </div>
                     </div>
