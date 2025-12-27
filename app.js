@@ -5,18 +5,18 @@ const i18n = {
         landing: {
             headline: "Frivillig hos BUSBUS",
             description: `
-                <p>Roskilde Festival 2025 ligger fra lørdag d. 28/6 til lørdag d. 5/7 - og BUSBUS har åbent alle dage.</p>
+                <p>Roskilde Festival 2026 ligger fra lørdag d. 27/6 til lørdag d. 4/7 - og BUSBUS har åbent alle dage.</p>
                 <p>BUSBUS ligger i Central Park på Ydre Plads med udsigt ind til Orange Sceneplads. Vi sælger bl.a. brunch, flæskestegssandwich og stegt flæsk med persillesovs.</p>
-                <h2>Sådan tilmelder du dig:</h2>
-                <p>Tryk på ‘start’ nederst på siden og udfyld tilmeldingen. Husk at læse og godkende betingelserne til sidst.</p>
-                <p>Er du i gruppe med andre, er det vigtigt, at I skriver samme gruppenavn i jeres tilmelding, da vores system ellers ikke kan se, at I skal have jeres vagter sammen.</p>
-                <p>Herefter modtager du en mail med emnet ‘Velkommen som frivillig hos BUSBUS’, hvor du kan se dine svar i tilmeldingen.</p>
+                <h2>Sådan tilmelder dig dig</h2>
+                <p>Tryk på ‘start’ nederst på siden og udfyld tilmeldingen. Husk at læse og godkende betingelserne til sidst i tilmeldingen.</p>
+                <p>Herefter modtager du en mail med emnet ‘Velkommen som frivillig hos BUSBUS’, hvor du kan se din tilmelding.</p>
                 <p>Du er nu oprettet som frivillig hos BUSBUS og sikret et armbånd til festivalen.</p>
+                <p>Er du i gruppe med andre, er det vigtigt, at I skriver samme gruppenavn i jeres tilmelding, da vores system ellers ikke kan se, at I skal have jeres vagter sammen.</p>
                 <h2>Hvad sker der så?</h2>
                 <p>Senest d. 16/6 modtager du vagtplan og al relevant information om afhentning af armbånd mm.</p>
                 <h2>Få svar på dine spørgsmål:</h2>
-                <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: Roskilde Festival - FAQ</p>
-                <p>Vi opfordrer dig til at søge information på Roskilde Festivals hjemmeside, men finder du ikke svar her, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
+                <p>På Roskilde Festivals hjemmeside kan du finde svar på de fleste ting ang. festivalen, men finder du ikke svar, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
                 <p>Vi glæder os til en god festival.</p>
                 <p>De bedste hilsner<br>Jonas og Susanne / BUSBUS</p>
             `,
@@ -85,7 +85,7 @@ const i18n = {
                 <p>Du er nu oprettet som frivillig, og du er sikret et armbånd til Roskilde Festival 2025.</p>
                 <p>Har du før været frivillig i en anden bod, kan der gå op til en uge før, at du er overflyttet til BUSBUS i People-VOL.</p>
                 <p>Senest d. 16/6-25 modtager du vagtplan, arbejdsbeskrivelser samt øvrig info vedrørende afhentning af armbånd mm.</p>
-                <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: Roskilde Festival - FAQ</p>
+                <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
                 <p>Vi opfordrer dig til at søge information på Roskilde Festivals hjemmeside, men finder du ikke svar her, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
                 <p>Har du venner eller veninder, der også vil være frivillige, er de velkomne, og vi kan garantere, at I får jeres vagter sammen - de skal blot huske at skrive samme gruppenavn som dig, når de tilmelder sig.</p>
                 <p>Vi glæder os til en god festival.</p>
@@ -179,18 +179,18 @@ const i18n = {
         landing: {
             headline: "Volunteer at BUSBUS",
             description: `
-                <p>Roskilde Festival 2025 runs from Saturday 28/6 to Saturday 5/7 — and BUSBUS is open every day.</p>
+                <p>Roskilde Festival 2026 runs from Saturday 27/6 to Saturday 4/7 — and BUSBUS is open every day.</p>
                 <p>BUSBUS is located in Central Park on the Outer Plaza with a view towards the Orange Stage area. We sell, among other things, brunch, pork roast sandwiches and fried pork with parsley sauce.</p>
-                <h2>How to sign up:</h2>
-                <p>Click “Start” at the bottom of the page and complete the registration. Remember to read and accept the terms at the end.</p>
+                <h2>How to sign up</h2>
+                <p>Click “Start” at the bottom of the page and complete the registration. Remember to read and accept the terms at the end of the registration.</p>
+                <p>Afterwards you'll receive an email with the subject ‘Welcome as a volunteer at BUSBUS’ where you can view your registration.</p>
+                <p>You are now registered as a volunteer at BUSBUS and have secured a wristband for the festival.</p>
                 <p>If you are in a group with others, it's important that you enter the same group name in your registrations so our system can schedule your shifts together.</p>
-                <p>Afterwards you'll receive an email with the subject ‘Welcome as a volunteer at BUSBUS’ where you can view your registration answers.</p>
-                <p>You are now registered as a volunteer at BUSBUS and secured a wristband for the festival.</p>
                 <h2>What happens next?</h2>
-                <p>Latest by 16/6 you will receive the shift schedule and all relevant information about wristband collection etc.</p>
+                <p>By 16/6 you will receive the shift schedule and all relevant information about wristband collection etc.</p>
                 <h2>Find answers to your questions:</h2>
-                <p>On Roskilde Festival's website you can find answers to all your questions about volunteering: Roskilde Festival - FAQ</p>
-                <p>We encourage you to look on Roskilde Festival's site first, but if you can't find an answer you can always contact us at: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>On Roskilde Festival's website you can find answers to all your questions about volunteering: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
+                <p>On Roskilde Festival's website you can find answers to most things about the festival, but if you can't find an answer you can always contact us at: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
                 <p>We look forward to a great festival.</p>
                 <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
             `,
