@@ -22,6 +22,19 @@ const i18n = {
             `,
             cta: "Start"
         },
+        intro: {
+            headline: "People-VOL-nr.",
+            p1: `<p>Alle frivillige på Roskilde Festival skal have en profil i festivalens interne system kaldet People-VOL. Alle med en profil i systemet har et individuelt People-VOL-nummer. Nummeret skal du bruge for at kunne tilmelde dig som frivillig hos BUSBUS.</p>`,
+            findTitle: "Jeg HAR tidligere været frivillig på Roskilde Festival og har en People-VOL-profil:",
+            findText: `<p>Har du tidligere været frivillig på Roskilde Festival, så har du allerede et People-VOL-nummer.</p>
+                       <p>Kan du ikke huske dit People-VOL-nummer, kan du finde det ved at trykke på den blå bjælke 'Find mit People-VOL-nummer' nedenunder. Husk at notere nummeret, så du har det, når du skal indtaste det i vores system.</p>`,
+            findBtn: "Find mit People-VOL-nummer",
+            createTitle: "Jeg har IKKE tidligere været frivillig og har ikke en People-VOL-profil:",
+            createText: `<p>Har du IKKE tidligere været frivillig på Roskilde Festival, skal du først oprette en profil i People-VOL inden, at du kan fortsætte din tilmelding hos BUSBUS. Husk at notere dit nye People-VOL-nummer. Du opretter en profil ved at trykke på bjælken nedenunder.</p>`,
+            createBtn: "Opret People-VOL-profil",
+            startTitle: "Start tilmelding som frivillig hos BUSBUS:",
+            startBtn: "Start tilmelding"
+        },
         form: {
             step: "Trin",
             back: "Tilbage",
@@ -745,7 +758,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('btn-start');
     if (startBtn) {
         // anchor already navigates; ensure it has translated text
-        startBtn.href = 'form.html';
+        startBtn.href = 'intro.html';
     }
 
     // Form page initialization
