@@ -78,6 +78,19 @@ const i18n = {
             reset: "Start Forfra",
             newSubmission: "Ny tilmelding"
         },
+        registered: {
+            title: "Velkommen som frivillig hos BUSBUS",
+            body: `
+                <p>Du er nu oprettet som frivillig, og du er sikret et armbånd til Roskilde Festival 2025.</p>
+                <p>Har du før været frivillig i en anden bod, kan der gå op til en uge før, at du er overflyttet til BUSBUS i People-VOL.</p>
+                <p>Senest d. 16/6-25 modtager du vagtplan, arbejdsbeskrivelser samt øvrig info vedrørende afhentning af armbånd mm.</p>
+                <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: Roskilde Festival - FAQ</p>
+                <p>Vi opfordrer dig til at søge information på Roskilde Festivals hjemmeside, men finder du ikke svar her, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>Har du venner eller veninder, der også vil være frivillige, er de velkomne, og vi kan garantere, at I får jeres vagter sammen - de skal blot huske at skrive samme gruppenavn som dig, når de tilmelder sig.</p>
+                <p>Vi glæder os til en god festival.</p>
+                <p>De bedste hilsner<br>Jonas og Susanne / BUSBUS</p>
+            `
+        },
         toast: {
             success: "Indsendelse gennemført!",
             error: "Der opstod en fejl. Prøv venligst igen."
@@ -224,6 +237,19 @@ const i18n = {
             message: "Your submission has been received. We'll be in touch soon.",
             reset: "Start Over",
             newSubmission: "Submit Another"
+        },
+        registered: {
+            title: "Welcome as a volunteer at BUSBUS",
+            body: `
+                <p>You are now registered as a volunteer and have secured a wristband for Roskilde Festival 2025.</p>
+                <p>If you have previously volunteered in another stall, it can take up to a week before you are transferred to BUSBUS in People-VOL.</p>
+                <p>By 16/6-25 at the latest you will receive your shift schedule, job descriptions and other information about collecting your wristband etc.</p>
+                <p>On Roskilde Festival's website you can find answers to all your questions about volunteering: Roskilde Festival - FAQ</p>
+                <p>We encourage you to check Roskilde Festival's website first, but if you can't find an answer there you can always contact us at: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>If you have friends who also want to volunteer, they are welcome, and we can guarantee you'll get shifts together — they just need to use the same group name when registering.</p>
+                <p>We look forward to a great festival.</p>
+                <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
+            `
         },
         toast: {
             success: "Submission successful!",
@@ -697,9 +723,9 @@ async function submitForm() {
             console.warn('Could not save submission summary to sessionStorage', e);
         }
 
-        // Redirect to confirmation page
+        // Redirect to registered/tilmeldt page
         setTimeout(() => {
-            window.location.href = 'confirmation.html';
+            window.location.href = 'tilmeldt.html';
         }, 800);
         
     } catch (error) {
@@ -747,6 +773,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize language on every page
     setLanguage(state.currentLanguage);
 
+    // Ensure intro page content is populated (works around timing/lookup issues)
+    function populateIntroPage() {
+        const keys = [
+            'intro.headline', 'intro.p1',
+            'intro.findTitle', 'intro.findText', 'intro.findBtn',
+            'intro.createTitle', 'intro.createText', 'intro.createBtn',
+            'intro.startTitle', 'intro.startBtn'
+        ];
+
+        keys.forEach(key => {
+            const el = document.querySelector(`[data-i18n="${key}"]`);
+            if (el) {
+                const html = t(key);
+                // If the translation contains HTML tags, set innerHTML, otherwise use textContent
+                if (/<[a-z][\s\S]*>/i.test(html)) {
+                    el.innerHTML = html;
+                } else {
+                    el.textContent = html;
+                }
+            }
+        });
+    }
+
     // Language switcher (present on all pages)
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -759,6 +808,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (startBtn) {
         // anchor already navigates; ensure it has translated text
         startBtn.href = 'intro.html';
+    }
+
+    // Populate intro page immediately after language init
+    if (window.location.pathname.endsWith('intro.html') || document.querySelector('[data-i18n^="intro."]')) {
+        populateIntroPage();
     }
 
     // Form page initialization

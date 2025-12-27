@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilmeldt — BUSBUS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="language-switcher" role="navigation" aria-label="Language selection">
+        <button class="lang-btn" data-lang="da" aria-label="Switch to Danish" title="Dansk">🇩🇰</button>
+        <button class="lang-btn" data-lang="en" aria-label="Switch to English" title="English">🇬🇧</button>
+    </div>
+
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+    <div class="container">
+        <section class="view active">
+            <div class="confirmation-content">
+                <div class="success-icon">✓</div>
+                <h1 data-i18n="registered.title">Velkommen som frivillig hos BUSBUS</h1>
+                <div data-i18n="registered.body"></div>
+                <div style="display:flex;gap:12px;justify-content:center;margin-top:1.5rem;">
+                    <a href="index.html" class="btn btn-secondary">Til forsiden</a>
+                    <a href="form.html" class="btn btn-primary">Start en ny tilmelding</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
