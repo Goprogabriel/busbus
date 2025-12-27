@@ -4,167 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - BusBus</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-header h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .loading {
-            text-align: center;
-            color: #667eea;
-            font-size: 14px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
+        /* Small form-specific overrides to match global tokens */
+        .auth-wrapper { width: 100%; max-width: 520px; margin: 0 auto; }
+        .auth-head { text-align: left; margin-bottom: var(--spacing-md); }
+        .auth-head h1 { margin: 0 0 var(--spacing-xs); font-size: var(--font-size-2xl); color: var(--color-primary); }
+        .auth-head p { margin: 0 0 var(--spacing-md); color: var(--color-text-light); }
+        .form-group { margin-bottom: var(--spacing-md); }
+        label { display:block; margin-bottom: 0.5rem; color: var(--color-text); font-weight: 500; }
+        input[type="email"], input[type="password"] { width:100%; padding: 0.75rem 1rem; border:1px solid var(--color-border); border-radius: var(--radius-md); font-family: inherit; }
+        .error-message { background: var(--color-error); color: white; padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); display:none; }
+        .error-message.show { display:block; }
+        .loading { color: var(--color-primary); margin-top: var(--spacing-sm); display:none; }
+        .loading.show { display:block; }
+        .back-link { margin-top: var(--spacing-md); }
+        .back-link a { color: var(--color-primary); text-decoration: none; }
+        .back-link a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>🔐 Admin Login</h1>
-            <p>Log ind for at administrere besvarelser</p>
-        </div>
+    <div class="container">
+        <section class="view active auth-wrapper">
+            <div class="form-container">
+                <div class="auth-head">
+                    <h1>Admin Login</h1>
+                    <p>Log ind for at administrere besvarelser</p>
+                </div>
 
-        <div class="error-message" id="errorMessage"></div>
+                <div id="errorMessage" class="error-message" role="alert" aria-live="assertive"></div>
 
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required autocomplete="email">
+                <form id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Adgangskode</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="loginBtn">Log ind</button>
+                </form>
+
+                <div class="loading" id="loading">Logger ind...</div>
+
+                <div class="back-link">
+                    <a href="../index.html">← Tilbage til forsiden</a>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="password">Adgangskode</label>
-                <input type="password" id="password" name="password" required autocomplete="current-password">
-            </div>
-
-            <button type="submit" class="btn" id="loginBtn">Log ind</button>
-        </form>
-
-        <div class="loading" id="loading">Logger ind...</div>
-
-        <div class="back-link">
-            <a href="../index.html">← Tilbage til forsiden</a>
-        </div>
+        </section>
     </div>
 
     <script type="module">
