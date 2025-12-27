@@ -82,6 +82,7 @@
                                 <option value="en" data-i18n="options.countryUK">Storbritannien (UK)</option>
                                 <option value="other" data-i18n="options.countryOther">Andet</option>
                             </select>
+                            <input type="text" id="countryOther" name="countryOther" placeholder="Andet land" style="display:none;margin-top:8px;" aria-hidden="true">
                         </div>
                     </div>
 
@@ -98,8 +99,9 @@
                                     <option value="+46" data-i18n="options.phoneSE">SE +46</option>
                                     <option value="+49" data-i18n="options.phoneDE">DE +49</option>
                                     <option value="+44" data-i18n="options.phoneUK">UK +44</option>
-                                    <option value="" data-i18n="options.phoneOther">Andet</option>
+                                    <option value="other" data-i18n="options.phoneOther">Andet</option>
                                 </select>
+                                <input type="text" id="phoneCountryOther" name="phoneCountryOther" placeholder="+XX" style="display:none;width:90px;" aria-hidden="true">
                                 <input type="tel" id="phone" name="phone" required style="flex:1;" data-i18n-placeholder="fields.phonePlaceholder" placeholder="12345678">
                             </div>
                         </div>

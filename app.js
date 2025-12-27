@@ -1,5 +1,26 @@
 // ========================================
 // FIREBASE CONFIGURATION & INITIALIZATION
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+
+// Your web app's Firebase configuration (provided)
+const firebaseConfig = {
+    apiKey: "AIzaSyBPZD1qOVmUAqiRKMA2EIy75vIapkjZpTA",
+    authDomain: "busbus-a4556.firebaseapp.com",
+    projectId: "busbus-a4556",
+    storageBucket: "busbus-a4556.firebasestorage.app",
+    messagingSenderId: "986020652124",
+    appId: "1:986020652124:web:1beeceac928db31c823299",
+    measurementId: "G-20L316JRVP"
+};
+
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+let analytics;
+try { analytics = getAnalytics(firebaseApp); } catch (e) { /* analytics may not be available in some environments */ }
+const db = getFirestore(firebaseApp);
+
 const i18n = {
     da: {
         landing: {
@@ -636,8 +657,20 @@ function collectFormData() {
         address: document.getElementById('address')?.value.trim() || null,
         postcode: document.getElementById('postcode')?.value.trim() || null,
         city: document.getElementById('city')?.value.trim() || null,
-        country: document.getElementById('country')?.value || null,
-        phoneCountry: document.getElementById('phoneCountry')?.value || null,
+        country: (function(){
+            const sel = document.getElementById('country');
+            const other = document.getElementById('countryOther');
+            if (!sel) return null;
+            if (sel.value === 'other') return other?.value.trim() || null;
+            return sel.value || null;
+        })(),
+        phoneCountry: (function(){
+            const sel = document.getElementById('phoneCountry');
+            const other = document.getElementById('phoneCountryOther');
+            if (!sel) return null;
+            if (sel.value === 'other') return other?.value.trim() || null;
+            return sel.value || null;
+        })(),
         phone: document.getElementById('phone')?.value.trim() || null,
         email: document.getElementById('email')?.value.trim() || null,
         previousVolunteer: document.querySelector('input[name="previousVolunteer"]:checked')?.value || null,
@@ -679,8 +712,12 @@ function populateReview() {
     document.getElementById('review-address').textContent = data.address || '-';
     document.getElementById('review-postcode').textContent = data.postcode || '-';
     document.getElementById('review-city').textContent = data.city || '-';
-    const countryLabelKey = data.country ? countryKeyMap[data.country] : null;
-    document.getElementById('review-country').textContent = countryLabelKey ? t(countryLabelKey) : '-';
+    let countryText = '-';
+    if (data.country) {
+        const countryLabelKey = countryKeyMap[data.country];
+        countryText = countryLabelKey ? t(countryLabelKey) : data.country;
+    }
+    document.getElementById('review-country').textContent = countryText || '-';
     document.getElementById('review-phone').textContent = `${data.phoneCountry || ''} ${data.phone || ''}`.trim() || '-';
     document.getElementById('review-email').textContent = data.email || '-';
 
@@ -749,7 +786,8 @@ async function submitForm() {
         
     } catch (error) {
         console.error('Error submitting form:', error);
-        showToast(t('toast.error'), 'error');
+        const message = error?.message ? `${t('toast.error')} (${error.message})` : t('toast.error');
+        showToast(message, 'error');
         btnSubmit.disabled = false;
         btnSubmit.textContent = t('form.submit');
     }
@@ -945,6 +983,50 @@ document.addEventListener('DOMContentLoaded', () => {
         if (birthEl) {
             birthEl.addEventListener('change', updateParentVisibility);
             updateParentVisibility();
+        }
+
+        // Country -> show 'other' input when user selects 'Andet'
+        function updateCountryVisibility() {
+            const sel = document.getElementById('country');
+            const other = document.getElementById('countryOther');
+            if (!sel || !other) return;
+            if (sel.value === 'other') {
+                other.style.display = 'block';
+                other.setAttribute('aria-hidden', 'false');
+                other.required = true;
+            } else {
+                other.style.display = 'none';
+                other.setAttribute('aria-hidden', 'true');
+                other.required = false;
+                other.value = '';
+            }
+        }
+        const countrySel = document.getElementById('country');
+        if (countrySel) {
+            countrySel.addEventListener('change', updateCountryVisibility);
+            updateCountryVisibility();
+        }
+
+        // Phone country code -> show custom code input when 'Andet' selected
+        function updatePhoneCountryVisibility() {
+            const sel = document.getElementById('phoneCountry');
+            const other = document.getElementById('phoneCountryOther');
+            if (!sel || !other) return;
+            if (sel.value === 'other') {
+                other.style.display = 'inline-block';
+                other.setAttribute('aria-hidden', 'false');
+                other.required = true;
+            } else {
+                other.style.display = 'none';
+                other.setAttribute('aria-hidden', 'true');
+                other.required = false;
+                other.value = '';
+            }
+        }
+        const phoneCountrySel = document.getElementById('phoneCountry');
+        if (phoneCountrySel) {
+            phoneCountrySel.addEventListener('change', updatePhoneCountryVisibility);
+            updatePhoneCountryVisibility();
         }
 
         // Initialize progress

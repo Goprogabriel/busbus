@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 🔒 Alt er lukket som udgangspunkt
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ✅ Submissions er åben for create
+    match /submissions/{docId} {
+
+      // Alle må oprette (uden login)
+      allow create: if isValidSubmission();
+
+      // Ingen må læse, opdatere eller slette
+      allow read, update, delete: if false;
+    }
+
+    function isValidSubmission() {
+      return
+        // Tillad disse felter (matcher din app.js struktur)
+        request.resource.data.keys().hasOnly([
+          "createdAt",
+          "language",
+          "answers",
+          "userAgent",
+          "referrer"
+        ]) &&
+
+        // createdAt skal være timestamp
+        request.resource.data.createdAt is timestamp &&
+
+        // language skal være string (2-10 tegn, fx 'da' eller 'en')
+        request.resource.data.language is string &&
+        request.resource.data.language.size() >= 2 &&
+        request.resource.data.language.size() <= 10 &&
+
+        // answers skal være et map/objekt
+        request.resource.data.answers is map &&
+
+        // userAgent og referrer må være string eller null
+        (request.resource.data.userAgent is string || request.resource.data.userAgent == null) &&
+        (request.resource.data.referrer is string || request.resource.data.referrer == null);
+    }
+  }
+}
