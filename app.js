@@ -90,6 +90,8 @@ const i18n = {
                 <p>Vi glæder os til en god festival.</p>
                 <p>De bedste hilsner<br>Jonas og Susanne / BUSBUS</p>
             `
+        ,
+            emailCopy: "Send kopi til mail"
         },
         toast: {
             success: "Indsendelse gennemført!",
@@ -263,6 +265,8 @@ const i18n = {
                 <p>We look forward to a great festival.</p>
                 <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
             `
+        ,
+            emailCopy: "Send me a copy"
         },
         toast: {
             success: "Submission successful!",
@@ -724,7 +728,7 @@ async function submitForm() {
         // Show success message
         showToast(t('toast.success'), 'success');
 
-        // Store a small summary in sessionStorage for the confirmation page
+        // Store a small summary and the full form data in sessionStorage for the confirmation page
         try {
             const small = {
                 id: docRef.id,
@@ -732,6 +736,8 @@ async function submitForm() {
                 phone: formData.phone || null
             };
             sessionStorage.setItem('lastSubmission', JSON.stringify(small));
+            // store full form answers so user can email themselves a copy
+            sessionStorage.setItem('lastSubmissionFull', JSON.stringify(formData));
         } catch (e) {
             console.warn('Could not save submission summary to sessionStorage', e);
         }
@@ -958,6 +964,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     confName.textContent = data.name;
                 }
             } catch (e) { /* ignore parsing errors */ }
+        }
+
+        // Email copy button: build a mailto: link containing the visible confirmation text and full answers
+        const emailBtn = document.getElementById('btn-email-copy');
+        if (emailBtn) {
+            emailBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Helper: strip HTML from registered body
+                const stripHtml = (html) => {
+                    const div = document.createElement('div');
+                    div.innerHTML = html || '';
+                    return div.textContent || div.innerText || '';
+                };
+
+                // Build core message: localized title + registered body (as text)
+                const title = t('registered.title');
+                const registeredHtml = t('registered.body');
+                let body = `${title}\n\n${stripHtml(registeredHtml)}\n\n`;
+
+                // Append submitted answers (from sessionStorage if available)
+                let answers = {};
+                try {
+                    const raw = sessionStorage.getItem('lastSubmissionFull');
+                    if (raw) answers = JSON.parse(raw);
+                } catch (err) {
+                    answers = {};
+                }
+
+                // Use review labels when possible for nicer field names
+                const labels = i18n[state.currentLanguage]?.review?.labels || {};
+
+                if (answers && Object.keys(answers).length) {
+                    body += `Dine svar:\n`;
+                    for (const key of Object.keys(answers)) {
+                        const label = labels[key] || key;
+                        let val = answers[key];
+                        if (val === null || val === undefined || val === '') val = '-';
+                        body += `${label}: ${val}\n`;
+                    }
+                } else {
+                    body += 'Ingen svar gemt.\n';
+                }
+
+                const subject = `${title} - BUSBUS`;
+                const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                // Open user's mail client
+                window.location.href = mailto;
+            });
         }
     }
 
