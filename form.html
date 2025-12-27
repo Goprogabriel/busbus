@@ -26,7 +26,7 @@
                     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
                     <div class="progress-text">
                         <span data-i18n="form.step">Step</span>
-                        <span id="current-step">1</span> / <span id="total-steps">6</span>
+                        <span id="current-step">1</span> / <span id="total-steps">8</span>
                         <span class="progress-percent" id="progress-percent">0%</span>
                     </div>
                 </div>
@@ -149,14 +149,11 @@
                         </div>
                     </div>
 
-                    <!-- Step 6: Review & Submit (+ Parent Contact if under 18) -->
+                    <!-- Step 6: Guardian Contact (shown only if under 18) -->
                     <div class="form-step" data-step="6">
-                        <h2 data-i18n="form.step6.title">Gennemse & Indsend</h2>
-                        <p class="step-description" data-i18n="form.step6.description">Tjek dine oplysninger før du sender</p>
-
-                        <!-- Parent contact section (shown only if under 18 on June 27, 2026) -->
-                        <div id="parentContact" style="display:none;background:var(--color-bg);padding:var(--spacing-lg);border-radius:var(--radius-md);margin-bottom:var(--spacing-lg);border:2px solid var(--color-accent);">
-                            <h3 data-i18n="fields.parentSectionTitle" style="margin-bottom:var(--spacing-md);color:var(--color-accent);">Kontaktoplysninger på forælder eller værge</h3>
+                        <h2 data-i18n="form.step6.title">Værge Oplysninger</h2>
+                        <p class="step-description" data-i18n="form.step6.description">Kontaktoplysninger på forælder eller værge</p>
+                        <div id="parentContact">
                             <p data-i18n="fields.parentSectionDescription" style="font-size:var(--font-size-sm);color:var(--color-text-light);margin-bottom:var(--spacing-md);">Du er under 18 år d. 27. juni 2026, så vi har brug for kontaktoplysninger på din forælder/værge.</p>
                             <div class="form-group">
                                 <label for="parentName" data-i18n="fields.parentName">Navn på forælder/værge <span class="required">*</span></label>
@@ -167,6 +164,63 @@
                                 <input type="tel" id="parentPhone" name="parentPhone" data-i18n-placeholder="fields.parentPhonePlaceholder" placeholder="12345678">
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Step 7: Terms & Conditions -->
+                    <div class="form-step" data-step="7">
+                        <h2 data-i18n="form.step7.title">Betingelser</h2>
+                        <p class="step-description" data-i18n="form.step7.description">Læs og acceptér betingelserne</p>
+                        
+                        <div class="terms-container" style="max-height:500px;overflow-y:auto;padding:var(--spacing-lg);background:var(--color-bg);border-radius:var(--radius-md);margin-bottom:var(--spacing-lg);">
+                            <h1 data-i18n="terms.title" style="font-size:var(--font-size-xl);margin-bottom:var(--spacing-lg);">Betingelser</h1>
+                            
+                            <h2 data-i18n="terms.shiftsTitle" style="font-size:var(--font-size-lg);margin-top:var(--spacing-lg);margin-bottom:var(--spacing-md);">Dine vagter</h2>
+                            <p data-i18n="terms.shiftsText" style="white-space:pre-line;margin-bottom:var(--spacing-lg);">- Frivillige hos BUSBUS arbejder ca. 32 timer fordelt på 4 vagter.
+
+- Dine vagter kan ligge i dagene fra lørdag d. 28. juni til lørdag d. 5. juli 2025.
+
+- Mødetid er altid 15 minutter, før vagten starter.</p>
+                            
+                            <h2 data-i18n="terms.benefitsTitle" style="font-size:var(--font-size-lg);margin-top:var(--spacing-lg);margin-bottom:var(--spacing-md);">Frivilliggoder</h2>
+                            <p data-i18n="terms.benefitsText" style="white-space:pre-line;margin-bottom:var(--spacing-lg);">- Du får mad og drikke, når du er på vagt.
+
+- Du har gratis adgang til Volunteer Camping, hvis du selv bestiller det via People-VOL.
+
+- Du har gratis adgang til Volunteer Village, som er et særligt lukket område for frivillige.
+
+- Du er som frivillig dækket af en lovpligtig arbejs­skade­forsik­ring tegnet af Roskilde Festival.</p>
+                            
+                            <h2 data-i18n="terms.requirementsTitle" style="font-size:var(--font-size-lg);margin-top:var(--spacing-lg);margin-bottom:var(--spacing-md);">Generelle krav</h2>
+                            <p data-i18n="terms.requirementsText" style="white-space:pre-line;margin-bottom:var(--spacing-lg);">- Hvis du som frivillig får inddraget dit armbånd, hvis armbåndet går tabt, eller det bliver beskadiget, skal det meddeles bodens frivilligansvarlige, Susanne, på tlf. 31310003.
+
+- Mistede armbånd kan IKKE erstattes. Du vil derfor ikke kunne tage dine vagter som frivillig, og det vil betragtes som udeblivelse fra vagt.
+
+- Ingen frivillige på vagt må fremtræde beruset eller på anden måde påvirket. Bortvises en frivillig af denne grund, vil adgangstegnet blive inddraget.</p>
+                            
+                            <h2 data-i18n="terms.sicknessTitle" style="font-size:var(--font-size-lg);margin-top:var(--spacing-lg);margin-bottom:var(--spacing-md);">Sygemeldingsprocedure</h2>
+                            <p data-i18n="terms.sicknessText" style="white-space:pre-line;margin-bottom:var(--spacing-lg);">1: Ring til Susanne på tlf. 31310003 og meld din sygemelding - inden din vagt starter.
+Pak alle dine ejendele og mød i BUSBUS-boden med din bagage.
+
+2: Her skal du aflevere dit armbånd. Herefter bliver du fulgt til nærmeste udgang og ønsket god bedring.</p>
+                            
+                            <h2 data-i18n="terms.importantTitle" style="font-size:var(--font-size-lg);margin-top:var(--spacing-lg);margin-bottom:var(--spacing-md);">VIGTIGT</h2>
+                            <p data-i18n="terms.importantText" style="white-space:pre-line;margin-bottom:var(--spacing-lg);">Det er et krav, at armbåndet afleveres fysisk i boden, da sygemeldingen ellers ikke godkendes. Husk at medbringe al din oppakning, da det ikke efterfølgende er muligt for dig at komme ind på camping og hente dine ting, når du først er kommet uden for festivalområdet.
+
+Ved godkendelse af betingelserne indvilger jeg i, at Roskilde Festival må opkræve 3500 kr. og registrere mig som uønsket frivillig de kommende 3 år, såfremt jeg udebliver fra en vagt, eller sygemeldingsproceduren ikke følges.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label" style="display:flex;align-items:flex-start;gap:var(--spacing-sm);">
+                                <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-top:4px;">
+                                <span data-i18n="terms.acceptLabel">Jeg har læst betingelserne</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Step 8: Review & Submit -->
+                    <div class="form-step" data-step="8">
+                        <h2 data-i18n="form.step8.title">Gennemse & Indsend</h2>
+                        <p class="step-description" data-i18n="form.step8.description">Tjek dine oplysninger før du sender</p>
 
                         <div class="review-section">
                             <h3 data-i18n="review.personal">Personlige Oplysninger</h3>
@@ -213,6 +267,12 @@
                             <dl class="review-list">
                                 <dt data-i18n="review.labels.parentName">Navn</dt><dd id="review-parentName">-</dd>
                                 <dt data-i18n="review.labels.parentPhone">Telefon</dt><dd id="review-parentPhone">-</dd>
+                            </dl>
+                        </div>
+                        <div class="review-section">
+                            <h3 data-i18n="review.terms">Betingelser</h3>
+                            <dl class="review-list">
+                                <dt data-i18n="review.labels.termsAccepted">Betingelser accepteret</dt><dd id="review-termsAccepted">-</dd>
                             </dl>
                         </div>
                     </div>

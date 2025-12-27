@@ -86,6 +86,14 @@ const i18n = {
                 description: "Yderligere information"
             },
             step6: {
+                title: "Værge Oplysninger",
+                description: "Kontaktoplysninger på forælder eller værge"
+            },
+            step7: {
+                title: "Betingelser",
+                description: "Læs og acceptér betingelserne"
+            },
+            step8: {
                 title: "Gennemse & Indsend",
                 description: "Tjek dine oplysninger før du sender"
             },
@@ -161,6 +169,7 @@ const i18n = {
             experience: "Erfaring",
             group: "Gruppe & Bemærkninger",
             parent: "Forældre / Værge",
+            terms: "Betingelser",
             labels: {
                 volNo: "People-VOL-nr.",
                 firstNames: "Fornavn",
@@ -178,7 +187,8 @@ const i18n = {
                 groupName: "Gruppenavn",
                 remarks: "Bemærkninger",
                 parentName: "Navn",
-                parentPhone: "Telefon"
+                parentPhone: "Telefon",
+                termsAccepted: "Betingelser accepteret"
             }
         },
         options: {
@@ -195,6 +205,20 @@ const i18n = {
             phoneDE: "DE +49",
             phoneUK: "UK +44",
             phoneOther: "Andet"
+        },
+        terms: {
+            title: "Betingelser",
+            shiftsTitle: "Dine vagter",
+            shiftsText: "- Frivillige hos BUSBUS arbejder ca. 32 timer fordelt på 4 vagter.\n\n- Dine vagter kan ligge i dagene fra lørdag d. 28. juni til lørdag d. 5. juli 2025.\n\n- Mødetid er altid 15 minutter, før vagten starter.",
+            benefitsTitle: "Frivilliggoder",
+            benefitsText: "- Du får mad og drikke, når du er på vagt.\n\n- Du har gratis adgang til Volunteer Camping, hvis du selv bestiller det via People-VOL.\n\n- Du har gratis adgang til Volunteer Village, som er et særligt lukket område for frivillige.\n\n- Du er som frivillig dækket af en lovpligtig arbejs­skade­forsik­ring tegnet af Roskilde Festival.",
+            requirementsTitle: "Generelle krav",
+            requirementsText: "- Hvis du som frivillig får inddraget dit armbånd, hvis armbåndet går tabt, eller det bliver beskadiget, skal det meddeles bodens frivilligansvarlige, Susanne, på tlf. 31310003.\n\n- Mistede armbånd kan IKKE erstattes. Du vil derfor ikke kunne tage dine vagter som frivillig, og det vil betragtes som udeblivelse fra vagt.\n\n- Ingen frivillige på vagt må fremtræde beruset eller på anden måde påvirket. Bortvises en frivillig af denne grund, vil adgangstegnet blive inddraget.",
+            sicknessTitle: "Sygemeldingsprocedure",
+            sicknessText: "1: Ring til Susanne på tlf. 31310003 og meld din sygemelding - inden din vagt starter.\nPak alle dine ejendele og mød i BUSBUS-boden med din bagage.\n\n2: Her skal du aflevere dit armbånd. Herefter bliver du fulgt til nærmeste udgang og ønsket god bedring.",
+            importantTitle: "VIGTIGT",
+            importantText: "Det er et krav, at armbåndet afleveres fysisk i boden, da sygemeldingen ellers ikke godkendes. Husk at medbringe al din oppakning, da det ikke efterfølgende er muligt for dig at komme ind på camping og hente dine ting, når du først er kommet uden for festivalområdet.\n\nVed godkendelse af betingelserne indvilger jeg i, at Roskilde Festival må opkræve 3500 kr. og registrere mig som uønsket frivillig de kommende 3 år, såfremt jeg udebliver fra en vagt, eller sygemeldingsproceduren ikke følges.",
+            acceptLabel: "Jeg har læst betingelserne"
         }
     },
     en: {
@@ -261,6 +285,14 @@ const i18n = {
                 description: "Additional information"
             },
             step6: {
+                title: "Guardian Information",
+                description: "Parent or guardian contact details"
+            },
+            step7: {
+                title: "Terms & Conditions",
+                description: "Read and accept the terms"
+            },
+            step8: {
                 title: "Review & Submit",
                 description: "Review your details before submitting."
             },
@@ -336,6 +368,7 @@ const i18n = {
             experience: "Experience",
             group: "Group & Remarks",
             parent: "Parent / Guardian",
+            terms: "Terms & Conditions",
             labels: {
                 volNo: "People-VOL-no.",
                 firstNames: "First names",
@@ -353,7 +386,8 @@ const i18n = {
                 groupName: "Group name",
                 remarks: "Remarks",
                 parentName: "Name",
-                parentPhone: "Phone"
+                parentPhone: "Phone",
+                termsAccepted: "Terms accepted"
             }
         },
         options: {
@@ -370,6 +404,20 @@ const i18n = {
             phoneDE: "DE +49",
             phoneUK: "UK +44",
             phoneOther: "Other"
+        },
+        terms: {
+            title: "Terms & Conditions",
+            shiftsTitle: "Your shifts",
+            shiftsText: "- Volunteers at BUSBUS work approximately 32 hours divided into 4 shifts.\n\n- Your shifts may be scheduled between Saturday 28 June and Saturday 5 July 2025.\n\n- Meeting time is always 15 minutes before the shift starts.",
+            benefitsTitle: "Volunteer benefits",
+            benefitsText: "- You will receive food and drinks when you are on shift.\n\n- You have free access to Volunteer Camping if you order it yourself via People-VOL.\n\n- You have free access to Volunteer Village, which is a special closed area for volunteers.\n\n- As a volunteer, you are covered by mandatory work injury insurance taken out by Roskilde Festival.",
+            requirementsTitle: "General requirements",
+            requirementsText: "- If your wristband is confiscated, lost, or damaged as a volunteer, it must be reported to the booth's volunteer manager, Susanne, at tel. 31310003.\n\n- Lost wristbands can NOT be replaced. You will therefore not be able to take your shifts as a volunteer, and it will be considered absence from shift.\n\n- No volunteers on shift may appear intoxicated or otherwise impaired. If a volunteer is expelled for this reason, the access ticket will be confiscated.",
+            sicknessTitle: "Sick leave procedure",
+            sicknessText: "1: Call Susanne at tel. 31310003 and report your sick leave - before your shift starts.\nPack all your belongings and meet at the BUSBUS booth with your luggage.\n\n2: Here you must hand in your wristband. You will then be escorted to the nearest exit and wished a speedy recovery.",
+            importantTitle: "IMPORTANT",
+            importantText: "It is a requirement that the wristband is physically handed in at the booth, otherwise the sick leave will not be approved. Remember to bring all your belongings, as it will not be possible for you to enter the camping area and collect your things once you have left the festival area.\n\nBy accepting the terms, I agree that Roskilde Festival may charge 3500 DKK and register me as an unwanted volunteer for the next 3 years if I am absent from a shift or the sick leave procedure is not followed.",
+            acceptLabel: "I have read the terms and conditions"
         }
     }
 };
@@ -381,7 +429,7 @@ const i18n = {
 const state = {
     // For multi-page setup we still track step and language
     currentStep: 1,
-    totalSteps: 6,
+    totalSteps: 8,
     currentLanguage: localStorage.getItem('language') || 'da',
     formData: {}
 };
@@ -543,6 +591,25 @@ function updateProgress() {
  * @param {number} stepNumber - Step number to show
  */
 function showStep(stepNumber) {
+    // Check if we should skip step 6 (guardian info) based on age
+    const birthdate = document.getElementById('birthdate')?.value;
+    
+    // If moving to step 6 but user is 18+, skip to step 7
+    if (stepNumber === 6 && birthdate && !isUnder18(birthdate)) {
+        if (state.currentStep < 6) {
+            // Going forward, skip to 7
+            stepNumber = 7;
+        } else {
+            // Going backward from step 7+, skip to 5
+            stepNumber = 5;
+        }
+    }
+    
+    // If coming back from step 7 and trying to go to 6, but user is 18+, go to 5 instead
+    if (stepNumber === 6 && state.currentStep === 7 && birthdate && !isUnder18(birthdate)) {
+        stepNumber = 5;
+    }
+    
     // Hide all steps
     document.querySelectorAll('.form-step').forEach(step => {
         step.classList.remove('active');
@@ -565,8 +632,8 @@ function showStep(stepNumber) {
     state.currentStep = stepNumber;
     updateProgress();
     
-    // Populate review step if on step 6
-    if (stepNumber === 6) {
+    // Populate review step if on step 8
+    if (stepNumber === 8) {
         populateReview();
     }
 }
@@ -640,6 +707,15 @@ function validateStep() {
         }
     }
 
+    if (state.currentStep === 7) {
+        const termsCheckbox = document.getElementById('termsAccepted');
+        if (termsCheckbox && !termsCheckbox.checked) {
+            isValid = false;
+            const formGroup = termsCheckbox.closest('.form-group');
+            if (formGroup) formGroup.classList.add('has-error');
+        }
+    }
+
     return isValid;
 }
 
@@ -679,7 +755,8 @@ function collectFormData() {
         groupName: document.getElementById('groupName')?.value.trim() || null,
         remarks: document.getElementById('remarks')?.value.trim() || null,
         parentName: document.getElementById('parentName')?.value.trim() || null,
-        parentPhone: document.getElementById('parentPhone')?.value.trim() || null
+        parentPhone: document.getElementById('parentPhone')?.value.trim() || null,
+        termsAccepted: document.getElementById('termsAccepted')?.checked || false
     };
 
     return formData;
@@ -736,6 +813,9 @@ function populateReview() {
     } else {
         if (parentSection) parentSection.style.display = 'none';
     }
+
+    // Terms acceptance
+    document.getElementById('review-termsAccepted').textContent = data.termsAccepted ? t('form.yes') : t('form.no');
 }
 
 /**
@@ -938,6 +1018,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Terms checkbox error removal
+        const termsCheckbox = document.getElementById('termsAccepted');
+        if (termsCheckbox) {
+            termsCheckbox.addEventListener('change', () => {
+                const formGroup = termsCheckbox.closest('.form-group');
+                if (formGroup) formGroup.classList.remove('has-error');
+            });
+        }
+
         // Group name toggle: show groupName input when inGroup === 'yes'
         function updateGroupVisibility() {
             const inGroup = document.querySelector('input[name="inGroup"]:checked')?.value;
@@ -958,18 +1047,18 @@ document.addEventListener('DOMContentLoaded', () => {
         updateGroupVisibility();
 
         // Birthdate -> parent contact visibility when under 18
+        // Step 6 is now the dedicated guardian step, only shown if user is under 18
         const birthEl = document.getElementById('birthdate');
         function updateParentVisibility() {
             const val = birthEl?.value;
-            const container = document.getElementById('parentContact');
             const parentName = document.getElementById('parentName');
             const parentPhone = document.getElementById('parentPhone');
             if (val && isUnder18(val)) {
-                if (container) container.style.display = 'block';
+                // Make parent fields required since step 6 will be shown
                 if (parentName) parentName.required = true;
                 if (parentPhone) parentPhone.required = true;
             } else {
-                if (container) container.style.display = 'none';
+                // User is 18+, step 6 will be skipped
                 if (parentName) {
                     parentName.required = false;
                     parentName.value = '';
