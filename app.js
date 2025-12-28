@@ -209,9 +209,9 @@ const i18n = {
         terms: {
             title: "Betingelser",
             shiftsTitle: "Dine vagter",
-            shiftsText: "- Frivillige hos BUSBUS arbejder ca. 32 timer fordelt på 4 vagter.\n\n- Dine vagter kan ligge i dagene fra lørdag d. 28. juni til lørdag d. 5. juli 2025.\n\n- Mødetid er altid 15 minutter, før vagten starter.",
+            shiftsText: "- Frivillige hos BUSBUS arbejder ca. 32 timer fordelt på 4 vagter.\n\n- Dine vagter kan ligge i dagene fra lørdag d. 27. juni til lørdag d. 4. juli 2026.\n\n- Mødetid er altid 15 minutter, før vagten starter.",
             benefitsTitle: "Frivilliggoder",
-            benefitsText: "- Du får mad og drikke, når du er på vagt.\n\n- Du har gratis adgang til Volunteer Camping, hvis du selv bestiller det via People-VOL.\n\n- Du har gratis adgang til Volunteer Village, som er et særligt lukket område for frivillige.\n\n- Du er som frivillig dækket af en lovpligtig arbejs­skade­forsik­ring tegnet af Roskilde Festival.",
+            benefitsText: "- Du får et måltid mad og drikke, når du er på vagt.\n\n- Du har gratis adgang til Volunteer Camping, hvis du selv bestiller det via People-VOL.\n\n- Du har gratis adgang til Volunteer Village, som er et særligt lukket område for frivillige.\n\n- Du er som frivillig dækket af en lovpligtig arbejs­skade­forsik­ring tegnet af Roskilde Festival.",
             requirementsTitle: "Generelle krav",
             requirementsText: "- Hvis du som frivillig får inddraget dit armbånd, hvis armbåndet går tabt, eller det bliver beskadiget, skal det meddeles bodens frivilligansvarlige, Susanne, på tlf. 31310003.\n\n- Mistede armbånd kan IKKE erstattes. Du vil derfor ikke kunne tage dine vagter som frivillig, og det vil betragtes som udeblivelse fra vagt.\n\n- Ingen frivillige på vagt må fremtræde beruset eller på anden måde påvirket. Bortvises en frivillig af denne grund, vil adgangstegnet blive inddraget.",
             sicknessTitle: "Sygemeldingsprocedure",
