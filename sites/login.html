@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Admin Login - BusBus</title>
+	<style>
+		body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f6f8fb}
+		.card{width:360px;background:#fff;padding:28px;border-radius:10px;box-shadow:0 6px 20px rgba(33,47,60,0.08)}
+		h1{font-size:18px;margin-bottom:12px;color:#1f3240}
+		label{display:block;font-size:13px;color:#4b5b66;margin-top:12px}
+		input{width:100%;padding:10px;border-radius:6px;border:1px solid #e6e9ee;margin-top:6px;font-size:14px}
+		button{margin-top:18px;width:100%;padding:10px;border-radius:6px;border:none;background:#2c3e50;color:#fff;font-weight:600;cursor:pointer}
+		.err{margin-top:12px;color:#e74c3c;font-size:13px}
+		.hint{margin-top:8px;font-size:13px;color:#7f8c8d}
+	</style>
+</head>
+<body>
+	<div class="card">
+		<h1>Admin login</h1>
+		<form id="loginForm">
+			<label for="email">Email</label>
+			<input id="email" type="email" required autocomplete="username" />
+			<label for="password">Password</label>
+			<input id="password" type="password" required autocomplete="current-password" />
+			<button id="submitBtn" type="submit">Log ind</button>
+		</form>
+		<div id="message" class="err" role="alert" aria-live="polite" style="display:none"></div>
+		<div class="hint">Kun administratorer kan logge ind her. Hvis du ikke er admin får du ikke adgang.</div>
+	</div>
+
+	<script type="module">
+		import { firebaseConfig } from './firebase-config.js';
+		import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+		import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+		import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+		const app = initializeApp(firebaseConfig);
+		const auth = getAuth(app);
+		const db = getFirestore(app);
+
+		const form = document.getElementById('loginForm');
+		const msg = document.getElementById('message');
+		const submitBtn = document.getElementById('submitBtn');
+
+		function showError(text){
+			msg.textContent = text;
+			msg.style.display = 'block';
+		}
+
+		function clearError(){
+			msg.textContent = '';
+			msg.style.display = 'none';
+		}
+
+		async function isAdmin(uid){
+			try{
+				const ref = doc(db, 'auth', uid);
+				const snap = await getDoc(ref);
+				return snap.exists();
+			}catch(e){
+				console.error('Admin check failed', e);
+				return false;
+			}
+		}
+
+		// Hvis brugeren allerede er logget ind - check admin og redirect
+		onAuthStateChanged(auth, async (user) => {
+			if(user){
+				const ok = await isAdmin(user.uid);
+				if(ok){
+					window.location.href = 'admin.html';
+				} else {
+					await signOut(auth);
+					showError('Adgang nægtet — du er ikke administrator.');
+				}
+			}
+		});
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			clearError();
+			submitBtn.disabled = true;
+			const email = document.getElementById('email').value.trim();
+			const password = document.getElementById('password').value;
+			try{
+				const cred = await signInWithEmailAndPassword(auth, email, password);
+				const uid = cred.user.uid;
+				const ok = await isAdmin(uid);
+				if(ok){
+					window.location.href = 'admin.html';
+				} else {
+					await signOut(auth);
+					showError('Adgang nægtet — du er ikke administrator.');
+				}
+			}catch(err){
+				console.error(err);
+				showError('Login mislykkedes: ' + (err.message || err.code || 'ukendt fejl'));
+			}finally{
+				submitBtn.disabled = false;
+			}
+		});
+	</script>
+</body>
+</html>
+
