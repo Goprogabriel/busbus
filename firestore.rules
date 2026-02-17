@@ -58,7 +58,10 @@ service cloud.firestore {
 
         // userAgent og referrer må være string eller null
         (request.resource.data.userAgent is string || request.resource.data.userAgent == null) &&
-        (request.resource.data.referrer is string || request.resource.data.referrer == null);
+        (request.resource.data.referrer is string || request.resource.data.referrer == null) &&
+
+        // metadata er valgfrit - hvis det er med, skal det være et map
+        (!request.resource.data.keys().hasAny(["metadata"]) || request.resource.data.metadata is map);
     }
   }
 }
