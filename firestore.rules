@@ -41,7 +41,8 @@ service cloud.firestore {
           "language",
           "answers",
           "userAgent",
-          "referrer"
+          "referrer",
+          "metadata"
         ]) &&
 
         // createdAt skal være timestamp

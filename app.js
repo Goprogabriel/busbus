@@ -120,7 +120,17 @@ const i18n = {
                 <p>De bedste hilsner<br>Jonas og Susanne / BUSBUS</p>
             `
         ,
-            emailCopy: "Send kopi til mail"
+            emailCopy: "Send kopi til mail",
+            waitlistUnder18Title: "Venteliste",
+            waitlistUnder18Body: `
+                <p>Kære frivillig</p>
+                <p>Tak for din tilmelding.</p>
+                <p>Vi har desværre nu fyldt alle pladser til frivillige, der ikke er fyldt 18 år inden festivalens start. Du er derfor blevet skrevet på vores venteliste.</p>
+                <p>Der er hvert år nogle, der melder fra, så der er en reel mulighed for, at der bliver en plads. Hvis det sker, kontakter vi dig hurtigst muligt.</p>
+                <p>Er du en del af en gruppe, der allerede er tilmeldt, sørger vi naturligvis for, at du får vagter sammen med dem, hvis du får tilbudt en plads.</p>
+                <p>Har du spørgsmål, er du meget velkommen til at skrive til os på <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>De bedste hilsner<br>Susanne / BUSBUS</p>
+            `
         },
         toast: {
             success: "Indsendelse gennemført!",
@@ -319,7 +329,17 @@ const i18n = {
                 <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
             `
         ,
-            emailCopy: "Send me a copy"
+            emailCopy: "Send me a copy",
+            waitlistUnder18Title: "Waitlist",
+            waitlistUnder18Body: `
+                <p>Dear volunteer</p>
+                <p>Thank you for your registration.</p>
+                <p>Unfortunately, we have now filled all spots for volunteers who are not yet 18 years old before the festival starts. You have therefore been placed on our waitlist.</p>
+                <p>Every year some people cancel, so there is a real possibility that a spot will open up. If that happens, we will contact you as soon as possible.</p>
+                <p>If you are part of a group that is already registered, we will of course make sure you get shifts together with them if you are offered a spot.</p>
+                <p>If you have any questions, you are very welcome to write to us at <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>Best regards<br>Susanne / BUSBUS</p>
+            `
         },
         toast: {
             success: "Submission successful!",
@@ -829,6 +849,9 @@ async function submitForm() {
     try {
         const formData = collectFormData();
         
+        // Check if volunteer is under 18 at festival start
+        const under18 = isUnder18(formData.birthdate);
+
         // Prepare submission data
         const submission = {
             createdAt: serverTimestamp(),
@@ -837,11 +860,16 @@ async function submitForm() {
             userAgent: navigator.userAgent,
             referrer: document.referrer || null
         };
-        
+
+        // If under 18, include waitlistUnder18 metadata in the initial submission
+        if (under18) {
+            submission.metadata = { waitlistUnder18: true };
+        }
+
         // Save to Firestore
         const docRef = await addDoc(collection(db, 'submissions'), submission);
         console.log('Document written with ID:', docRef.id);
-        
+
         // Show success message
         showToast(t('toast.success'), 'success');
 
@@ -855,6 +883,10 @@ async function submitForm() {
             sessionStorage.setItem('lastSubmission', JSON.stringify(small));
             // store full form answers so user can email themselves a copy
             sessionStorage.setItem('lastSubmissionFull', JSON.stringify(formData));
+            // store under-18 waitlist flag so confirmation page shows correct message
+            if (under18) {
+                sessionStorage.setItem('isWaitlistUnder18', 'true');
+            }
         } catch (e) {
             console.warn('Could not save submission summary to sessionStorage', e);
         }
@@ -1125,6 +1157,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Confirmation page: nothing complicated; allow Start Over navigation
     const confirmation = document.querySelector('.confirmation-content');
     if (confirmation) {
+        // Check if this is an under-18 waitlist submission
+        const isWaitlistUnder18 = sessionStorage.getItem('isWaitlistUnder18') === 'true';
+
+        // If under-18 waitlist, override the title and body on the confirmation page
+        if (isWaitlistUnder18) {
+            const titleEl = confirmation.querySelector('[data-i18n="registered.title"]');
+            const bodyEl = confirmation.querySelector('[data-i18n="registered.body"]');
+            const successIcon = confirmation.querySelector('.success-icon');
+            if (titleEl) titleEl.textContent = t('registered.waitlistUnder18Title');
+            if (bodyEl) bodyEl.innerHTML = t('registered.waitlistUnder18Body');
+            if (successIcon) successIcon.textContent = '⏳';
+        }
+
         // Optionally show name from session storage
         const submission = sessionStorage.getItem('lastSubmission');
         if (submission) {
@@ -1150,9 +1195,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     return div.textContent || div.innerText || '';
                 };
 
-                // Build core message: localized title + registered body (as text)
-                const title = t('registered.title');
-                const registeredHtml = t('registered.body');
+                // Build core message: use waitlist text if applicable
+                const title = isWaitlistUnder18 ? t('registered.waitlistUnder18Title') : t('registered.title');
+                const registeredHtml = isWaitlistUnder18 ? t('registered.waitlistUnder18Body') : t('registered.body');
                 let body = `${title}\n\n${stripHtml(registeredHtml)}\n\n`;
 
                 // Append submitted answers (from sessionStorage if available)

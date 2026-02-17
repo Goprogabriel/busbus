@@ -588,6 +588,11 @@
                         <option value="yes">På venteliste</option>
                         <option value="no">Ikke på venteliste</option>
                     </select>
+                    <select id="waitlistU18Filter">
+                        <option value="">Venteliste u18</option>
+                        <option value="yes">På venteliste u18</option>
+                        <option value="no">Ikke på venteliste u18</option>
+                    </select>
                     <div style="font-size: 0.875rem; color: var(--color-text-light); margin-left: auto;">
                         <span id="resultCount">0</span> resultater
                     </div>
@@ -618,6 +623,7 @@
                                 <th>Hold</th>
                                 <th>Gruppe</th>
                                 <th>Venteliste</th>
+                                <th>Venteliste u18</th>
                                 <th>Bruger note</th>
                                 <th>Admin note</th>
                             </tr>
@@ -774,6 +780,9 @@
             if (field === 'onWaitlist') {
                 return submission.metadata?.onWaitlist || false;
             }
+            if (field === 'waitlistUnder18') {
+                return submission.metadata?.waitlistUnder18 || false;
+            }
 
             // Then check answers object
             if (!submission.answers) return '';
@@ -811,6 +820,7 @@
             const volFilter = document.getElementById('volFilter').value;
             const holdFilter = document.getElementById('holdFilter').value;
             const waitlistFilter = document.getElementById('waitlistFilter').value;
+            const waitlistU18Filter = document.getElementById('waitlistU18Filter').value;
 
             // Get all unique groups for the dropdown
             const allGroups = new Set();
@@ -884,6 +894,13 @@
                     if (waitlistFilter === 'no' && onWaitlist) return false;
                 }
 
+                // Waitlist under 18 filter
+                if (waitlistU18Filter) {
+                    const wlU18 = getField(submission, 'waitlistUnder18');
+                    if (waitlistU18Filter === 'yes' && !wlU18) return false;
+                    if (waitlistU18Filter === 'no' && wlU18) return false;
+                }
+
                 return true;
             });
 
@@ -917,6 +934,7 @@
                 const onHold = getField(submission, 'onHold');
                 const inGroup = getField(submission, 'inGroup');
                 const onWaitlist = getField(submission, 'onWaitlist');
+                const waitlistUnder18 = getField(submission, 'waitlistUnder18');
                 const volNr = getField(submission, 'volNo') || submission.id.slice(0, 6);
 
                 return `
@@ -934,6 +952,7 @@
                         <td>${onHold ? '✓' : '-'}</td>
                         <td>${group ? '<span class="badge badge-group">' + group + '</span>' : '-'}</td>
                         <td>${onWaitlist ? '✓' : '-'}</td>
+                        <td>${waitlistUnder18 ? '✓' : '-'}</td>
                         <td>${note ? note.substring(0, 20) + (note.length > 20 ? '...' : '') : '-'}</td>
                         <td>${adminNote ? adminNote.substring(0, 20) + (adminNote.length > 20 ? '...' : '') : '-'}</td>
                     </tr>
@@ -972,6 +991,7 @@
             const isOnHold = submission.metadata?.onHold || false;
             const isInGroup = submission.metadata?.inGroup || false;
             const isOnWaitlist = submission.metadata?.onWaitlist || false;
+            const isWaitlistUnder18 = submission.metadata?.waitlistUnder18 || false;
             const metaNote = submission.metadata?.note || '';
 
             const panelContent = document.getElementById('panelContent');
@@ -1003,6 +1023,13 @@
                         <label>Venteliste</label>
                         <label class="toggle-switch">
                             <input type="checkbox" id="toggle-waitlist" ${isOnWaitlist ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-group">
+                        <label>Venteliste u18</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-waitlistU18" ${isWaitlistUnder18 ? 'checked' : ''}>
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
@@ -1113,6 +1140,7 @@
                     onHold: document.getElementById('toggle-onHold').checked,
                     inGroup: document.getElementById('toggle-inGroup').checked,
                     onWaitlist: document.getElementById('toggle-waitlist').checked,
+                    waitlistUnder18: document.getElementById('toggle-waitlistU18').checked,
                     note: document.getElementById('edit-metaNote').value
                 };
 
@@ -1204,6 +1232,11 @@
         });
 
         document.getElementById('waitlistFilter').addEventListener('change', () => {
+            applyFilters();
+            renderTable();
+        });
+
+        document.getElementById('waitlistU18Filter').addEventListener('change', () => {
             applyFilters();
             renderTable();
         });
