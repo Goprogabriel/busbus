@@ -614,7 +614,7 @@
                                 <th>Fornavn og mellemnavn</th>
                                 <th>Efternavn</th>
                                 <th>Fødselsdato</th>
-                                <th>Alder</th>
+                                <th>Alder (Nu / Festival)</th>
                                 <th>By</th>
                                 <th>Land</th>
                                 <th>Tlf nr</th>
@@ -741,12 +741,23 @@
             if (!birthdate) return '';
             const today = new Date();
             const birth = new Date(birthdate);
-            let age = today.getFullYear() - birth.getFullYear();
-            const monthDiff = today.getMonth() - birth.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-                age--;
+            
+            // Current age
+            let currentAge = today.getFullYear() - birth.getFullYear();
+            const currentMonthDiff = today.getMonth() - birth.getMonth();
+            if (currentMonthDiff < 0 || (currentMonthDiff === 0 && today.getDate() < birth.getDate())) {
+                currentAge--;
             }
-            return age + ' år';
+            
+            // Festival age (June 27, 2026)
+            const festivalDate = new Date('2026-06-27');
+            let festivalAge = festivalDate.getFullYear() - birth.getFullYear();
+            const festivalMonthDiff = festivalDate.getMonth() - birth.getMonth();
+            if (festivalMonthDiff < 0 || (festivalMonthDiff === 0 && festivalDate.getDate() < birth.getDate())) {
+                festivalAge--;
+            }
+            
+            return `${currentAge} / ${festivalAge}`;
         }
 
         // Calculate age as number for filtering
