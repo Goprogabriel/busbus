@@ -120,17 +120,7 @@ const i18n = {
                 <p>De bedste hilsner<br>Susanne / BUSBUS</p>
             `
         ,
-            emailCopy: "Send kopi til mail",
-            waitlistUnder18Title: "Venteliste",
-            waitlistUnder18Body: `
-                <p>Kære frivillig</p>
-                <p>Tak for din tilmelding.</p>
-                <p>Vi har desværre nu fyldt alle pladser til frivillige, der ikke er fyldt 18 år inden festivalens start. Du er derfor blevet skrevet på vores venteliste.</p>
-                <p>Der er hvert år nogle, der melder fra, så der er en reel mulighed for, at der bliver en plads. Hvis det sker, kontakter vi dig hurtigst muligt.</p>
-                <p>Er du en del af en gruppe, der allerede er tilmeldt, sørger vi naturligvis for, at du får vagter sammen med dem, hvis du får tilbudt en plads.</p>
-                <p>Har du spørgsmål, er du meget velkommen til at skrive til os på <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
-                <p>De bedste hilsner<br>Susanne / BUSBUS</p>
-            `
+            emailCopy: "Send kopi til mail"
         },
         toast: {
             success: "Indsendelse gennemført!",
@@ -329,17 +319,7 @@ const i18n = {
                 <p>Best regards,<br>Susanne / BUSBUS</p>
             `
         ,
-            emailCopy: "Send me a copy",
-            waitlistUnder18Title: "Waitlist",
-            waitlistUnder18Body: `
-                <p>Dear volunteer</p>
-                <p>Thank you for your registration.</p>
-                <p>Unfortunately, we have now filled all spots for volunteers who are not yet 18 years old before the festival starts. You have therefore been placed on our waitlist.</p>
-                <p>Every year some people cancel, so there is a real possibility that a spot will open up. If that happens, we will contact you as soon as possible.</p>
-                <p>If you are part of a group that is already registered, we will of course make sure you get shifts together with them if you are offered a spot.</p>
-                <p>If you have any questions, you are very welcome to write to us at <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
-                <p>Best regards<br>Susanne / BUSBUS</p>
-            `
+            emailCopy: "Send me a copy"
         },
         toast: {
             success: "Submission successful!",
