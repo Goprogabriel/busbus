@@ -167,9 +167,6 @@
             border-radius: var(--radius-md);
             margin-bottom: var(--spacing-md);
             border: 1px solid var(--color-border);
-            position: sticky;
-            top: 57px;
-            z-index: 95;
         }
 
         .controls-row {
@@ -596,9 +593,8 @@
                         <option value="yes">På venteliste u18</option>
                         <option value="no">Ikke på venteliste u18</option>
                     </select>
-                    <div style="font-size: 0.875rem; color: var(--color-text-light); margin-left: auto; display: flex; align-items: center; gap: var(--spacing-md);">
-                        <button class="btn btn-secondary" id="exportBtn" style="padding: 6px 12px; font-size: 0.875rem; background: var(--color-success); color: white; border: none;">📥 Excel/CSV</button>
-                        <div><span id="resultCount">0</span> resultater</div>
+                    <div style="font-size: 0.875rem; color: var(--color-text-light); margin-left: auto;">
+                        <span id="resultCount">0</span> resultater
                     </div>
                 </div>
             </div>
@@ -1257,73 +1253,6 @@
         });
 
         document.getElementById('refreshBtn').addEventListener('click', loadSubmissions);
-
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            if (filteredSubmissions.length === 0) {
-                showNotification('Ingen resultater at eksportere', 'error');
-                return;
-            }
-
-            // CSV Header
-            const headers = [
-                'Vol nr', 'Fornavn og mellemnavn', 'Efternavn', 'Fødselsdato', 'Alder (Nu / Festival)',
-                'By', 'Land', 'Tlf nr', 'Mail', 'VOL', 'Hold', 'Gruppe', 
-                'Venteliste', 'Venteliste u18', 'Bruger note', 'Admin note'
-            ];
-
-            let csvContent = '\uFEFF' + headers.join(';') + '\n';
-
-            filteredSubmissions.forEach(sub => {
-                const volNr = typeof sub.volNo !== 'undefined' ? sub.volNo : (typeof sub.volNumber !== 'undefined' ? sub.volNumber : (sub.id || '').slice(0, 6));
-                
-                const firstName = getField(sub, 'firstName');
-                const lastName = getField(sub, 'lastName');
-                const birthdate = getField(sub, 'birthdate');
-                const age = calculateAge(birthdate);
-                const city = getField(sub, 'city');
-                const country = getField(sub, 'country');
-                const phone = getField(sub, 'phone');
-                const email = getField(sub, 'email');
-                const group = getField(sub, 'group');
-                const note = getField(sub, 'note');
-                const adminNote = getField(sub, 'adminNote');
-                const createdInVol = getField(sub, 'createdInVol');
-                const onHold = getField(sub, 'onHold');
-                const onWaitlist = getField(sub, 'onWaitlist');
-                const waitlistUnder18 = getField(sub, 'waitlistUnder18');
-
-                const row = [
-                    volNr,
-                    firstName,
-                    lastName,
-                    birthdate,
-                    age,
-                    city,
-                    country,
-                    phone,
-                    email,
-                    createdInVol ? 'Ja' : 'Nej',
-                    onHold ? 'Ja' : 'Nej',
-                    group || 'Ingen',
-                    onWaitlist ? 'Ja' : 'Nej',
-                    waitlistUnder18 ? 'Ja' : 'Nej',
-                    (note || '').replace(/\n/g, ' '),
-                    (adminNote || '').replace(/\n/g, ' ')
-                ].map(v => `"${String(v).replace(/"/g, '""')}"`);
-
-                csvContent += row.join(';') + '\n';
-            });
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            
-            const downloadLink = document.createElement("a");
-            downloadLink.href = url;
-            downloadLink.download = `busbus-eksport-${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        });
 
         // Initialize
         checkAuth().then(() => {

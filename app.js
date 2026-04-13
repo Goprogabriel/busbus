@@ -109,15 +109,15 @@ const i18n = {
             newSubmission: "Ny tilmelding"
         },
         registered: {
-            title: "Velkommen som frivillig hos BUSBUS",
+            title: "Venteliste",
             body: `
-                <p>Du er nu oprettet som frivillig, og du er sikret et armbånd til Roskilde Festival 2026.</p>
-                <p>Senest d. 16/6-25 modtager du vagtplan og øvrig info vedrørende afhentning af armbånd mm.</p>
-                <p>På Roskilde Festivals hjemmeside kan du få svar på alle dine spørgsmål om at være frivillig på festivalen: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
-                <p>På Roskilde Festivals hjemmeside kan du finde svar på de fleste ting ang. festivalen, men finder du ikke svar, kan du selvfølgelig altid kontakte os på følgende mail: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
-                <p>Har du venner eller veninder, der også vil være frivillige, er de velkomne, og vi kan garantere, at I får jeres vagter sammen - de skal blot huske at skrive samme gruppenavn som dig, når de tilmelder sig.</p>
-                <p>Vi glæder os til en god festival.</p>
-                <p>De bedste hilsner<br>Jonas og Susanne / BUSBUS</p>
+                <p>Kære frivillig</p>
+                <p>Tak for din tilmelding.</p>
+                <p>Vi har desværre nu fyldt alle pladser til frivillige. Du er derfor blevet skrevet på vores venteliste.</p>
+                <p>Der er hvert år nogle, der melder fra, så der er en reel mulighed for, at der bliver en plads. Hvis det sker, kontakter vi dig hurtigst muligt.</p>
+                <p>Er du en del af en gruppe, der allerede er tilmeldt, sørger vi naturligvis for, at du får vagter sammen med dem, hvis du får tilbudt en plads.</p>
+                <p>Har du spørgsmål, er du meget velkommen til at skrive til os på <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>De bedste hilsner<br>Susanne / BUSBUS</p>
             `
         ,
             emailCopy: "Send kopi til mail",
@@ -318,15 +318,15 @@ const i18n = {
             newSubmission: "Submit Another"
         },
         registered: {
-            title: "Welcome as a volunteer at BUSBUS",
+            title: "Waiting List",
             body: `
-                <p>You are now registered as a volunteer and have secured a wristband for Roskilde Festival 2026.</p>
-                <p>By 16/6 you will receive the shift schedule and other information about wristband collection and practicalities.</p>
-                <p>On Roskilde Festival's website you can find answers to all your questions about volunteering: <a href="https://faq.roskilde-festival.dk/hc/da/sections/14361365551773-Bliv-frivillig?_gl=1*1onv2tx*_gcl_au*MTMyOTc2MjM4LjE3MzM3NDc1ODQ.*_ga*MTY3NzAxODg2LjE3MTcyNTA4NzE.*_ga_3MDRMNX0DN*MTczMzc0NzU4My4zLjEuMTczMzc0NzYwNC4zOS4wLjA.">Roskilde Festival - FAQ</a></p>
-                <p>If you can't find an answer there, you can always contact us at: <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
-                <p>If you have friends who also want to volunteer, they are welcome, and we can ensure you'll get shifts together — they just need to use the same group name when registering.</p>
-                <p>We look forward to a great festival.</p>
-                <p>Best regards<br>Jonas and Susanne / BUSBUS</p>
+                <p>Dear volunteer,</p>
+                <p>Thank you for your sign-up.</p>
+                <p>Unfortunately, all volunteer spots have now been filled, and you have therefore been placed on our waiting list.</p>
+                <p>Every year, some volunteers cancel their participation, so there is a real possibility that a spot will become available. If that happens, we will contact you as soon as possible.</p>
+                <p>If you are part of a group that has already signed up, we will of course make sure that you get your shifts together with them if you are offered a spot.</p>
+                <p>If you have any questions, you are very welcome to contact us at <a href="mailto:busbus.roskilde@gmail.com">busbus.roskilde@gmail.com</a></p>
+                <p>Best regards,<br>Susanne / BUSBUS</p>
             `
         ,
             emailCopy: "Send me a copy",
@@ -858,13 +858,9 @@ async function submitForm() {
             language: state.currentLanguage,
             answers: formData,
             userAgent: navigator.userAgent,
-            referrer: document.referrer || null
+            referrer: document.referrer || null,
+            metadata: { waitlistUnder18: true }
         };
-
-        // If under 18, include waitlistUnder18 metadata in the initial submission
-        if (under18) {
-            submission.metadata = { waitlistUnder18: true };
-        }
 
         // Save to Firestore
         const docRef = await addDoc(collection(db, 'submissions'), submission);
@@ -883,10 +879,8 @@ async function submitForm() {
             sessionStorage.setItem('lastSubmission', JSON.stringify(small));
             // store full form answers so user can email themselves a copy
             sessionStorage.setItem('lastSubmissionFull', JSON.stringify(formData));
-            // store under-18 waitlist flag so confirmation page shows correct message
-            if (under18) {
-                sessionStorage.setItem('isWaitlistUnder18', 'true');
-            }
+            // All submissions now go to waitlist
+            sessionStorage.setItem('isWaitlistUnder18', 'true');
         } catch (e) {
             console.warn('Could not save submission summary to sessionStorage', e);
         }
