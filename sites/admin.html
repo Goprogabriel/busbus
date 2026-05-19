@@ -135,6 +135,20 @@
             background: #E8E8E8;
         }
 
+        .btn-export {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #1f8f53;
+        }
+
+        .export-note {
+            font-size: 0.8125rem;
+            color: var(--color-text-light);
+        }
+
         /* Main Layout */
         .main-container {
             display: flex;
@@ -174,6 +188,13 @@
             gap: var(--spacing-md);
             align-items: center;
             margin-bottom: var(--spacing-md);
+        }
+
+        .controls-row-export {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            justify-content: flex-end;
         }
 
         .controls-row:last-child {
@@ -593,6 +614,10 @@
                         <option value="yes">På venteliste u18</option>
                         <option value="no">Ikke på venteliste u18</option>
                     </select>
+                    <div class="controls-row-export" style="margin-left: auto;">
+                        <button class="btn btn-export" id="exportBtn" type="button" style="display: none;">⬇️ CSV eksport</button>
+                        <span class="export-note" id="exportNote" style="display: none;">Eksport er slået fra over 1000 besvarelser.</span>
+                    </div>
                     <div style="font-size: 0.875rem; color: var(--color-text-light); margin-left: auto;">
                         <span id="resultCount">0</span> resultater
                     </div>
@@ -669,6 +694,7 @@
         let allSubmissions = [];
         let filteredSubmissions = [];
         let selectedId = null;
+        const MAX_EXPORT_SUBMISSIONS = 1000;
 
         const loading = document.getElementById('loading');
         const emptyState = document.getElementById('emptyState');
@@ -676,6 +702,8 @@
         const tableBody = document.getElementById('tableBody');
         const sidePanel = document.getElementById('sidePanel');
         const notification = document.getElementById('notification');
+        const exportBtn = document.getElementById('exportBtn');
+        const exportNote = document.getElementById('exportNote');
 
         // Check authentication
         async function checkAuth() {
@@ -719,6 +747,7 @@
                     ...doc.data()
                 }));
 
+                updateExportControls();
                 applyFilters();
                 renderTable();
 
@@ -732,6 +761,7 @@
             } catch (error) {
                 console.error('Error loading submissions:', error);
                 showNotification('Fejl ved indlæsning af data', 'error');
+                updateExportControls();
                 loading.style.display = 'none';
             }
         }
@@ -772,6 +802,124 @@
             }
             return age;
         }
+
+        function formatCsvValue(value) {
+            if (value === null || value === undefined) return '';
+            const text = String(value).replace(/"/g, '""');
+            return /[;"\n\r]/.test(text) ? `"${text}"` : text;
+        }
+
+        function buildExportRows(submissions) {
+            const headers = [
+                'ID',
+                'Oprettet',
+                'Sprog',
+                'Vol nr.',
+                'Fornavn og mellemnavn',
+                'Efternavn',
+                'Fødselsdato',
+                'Alder (Nu / Festival)',
+                'Adresse',
+                'Postnummer',
+                'By',
+                'Land',
+                'Telefon',
+                'Email',
+                'Gruppe navn',
+                'Oprettet i VOL',
+                'På hold',
+                'I gruppe med nogen',
+                'Venteliste',
+                'Venteliste u18',
+                'Bruger note',
+                'Admin note'
+            ];
+
+            const rows = submissions.map(submission => {
+                const createdAt = submission.createdAt?.toDate ? submission.createdAt.toDate().toLocaleString('da-DK') : '';
+                const firstName = getField(submission, 'firstName');
+                const lastName = getField(submission, 'lastName');
+                const birthdate = getField(submission, 'birthdate');
+                const age = calculateAge(birthdate);
+                const address = getField(submission, 'address');
+                const zipCode = getField(submission, 'zipCode');
+                const city = getField(submission, 'city');
+                const country = getField(submission, 'country');
+                const phone = getField(submission, 'phone');
+                const email = getField(submission, 'email');
+                const group = getField(submission, 'group');
+                const note = getField(submission, 'note');
+                const adminNote = getField(submission, 'adminNote');
+                const createdInVol = getField(submission, 'createdInVol') ? 'Ja' : 'Nej';
+                const onHold = getField(submission, 'onHold') ? 'Ja' : 'Nej';
+                const inGroup = getField(submission, 'inGroup') ? 'Ja' : 'Nej';
+                const onWaitlist = getField(submission, 'onWaitlist') ? 'Ja' : 'Nej';
+                const waitlistUnder18 = getField(submission, 'waitlistUnder18') ? 'Ja' : 'Nej';
+                const volNr = getField(submission, 'volNo') || submission.id.slice(0, 6);
+
+                return [
+                    submission.id,
+                    createdAt,
+                    submission.language || '',
+                    volNr,
+                    firstName || '',
+                    lastName || '',
+                    birthdate || '',
+                    age || '',
+                    address || '',
+                    zipCode || '',
+                    city || '',
+                    country || '',
+                    phone || '',
+                    email || '',
+                    group || '',
+                    createdInVol,
+                    onHold,
+                    inGroup,
+                    onWaitlist,
+                    waitlistUnder18,
+                    note || '',
+                    adminNote || ''
+                ].map(formatCsvValue).join(';');
+            });
+
+            return [headers.map(formatCsvValue).join(';'), ...rows].join('\r\n');
+        }
+
+        function downloadTextFile(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function updateExportControls() {
+            const canExport = allSubmissions.length > 0 && allSubmissions.length <= MAX_EXPORT_SUBMISSIONS;
+            exportBtn.style.display = canExport ? 'inline-flex' : 'none';
+            exportNote.style.display = allSubmissions.length > MAX_EXPORT_SUBMISSIONS ? 'inline' : 'none';
+        }
+
+        window.exportSubmissions = function() {
+            if (allSubmissions.length === 0) {
+                showNotification('Ingen besvarelser at eksportere', 'error');
+                return;
+            }
+
+            if (allSubmissions.length > MAX_EXPORT_SUBMISSIONS) {
+                showNotification('Eksport er kun tilgængelig under 1000 besvarelser', 'error');
+                return;
+            }
+
+            const csv = '\ufeff' + buildExportRows(allSubmissions);
+            const dateStamp = new Date().toISOString().slice(0, 10);
+            downloadTextFile(`besvarelser-${dateStamp}.csv`, csv, 'text/csv;charset=utf-8;');
+            showNotification('CSV-fil er hentet', 'success');
+        };
 
         // Extract field from answers or metadata
         function getField(submission, field) {
@@ -1253,6 +1401,7 @@
         });
 
         document.getElementById('refreshBtn').addEventListener('click', loadSubmissions);
+        exportBtn.addEventListener('click', window.exportSubmissions);
 
         // Initialize
         checkAuth().then(() => {
